@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	imageP	I1, I2, tmp_img;
 	// read input image (I1) and reserve space for output (I2)
 	I1 = IP_readImage(argv[1]);
-	I2 = NEWIMAGE;
+    I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
 
 	// read n and gamma from STDIN
