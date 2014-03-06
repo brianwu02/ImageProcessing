@@ -18,13 +18,12 @@ void ordered_dither(imageP, int, float, imageP, imageP);
 int clip_values(int);
 bool is_pow_of_2(int);
 
-int main(int argc, char** argv)
-{
-	int	n;
+int main(int argc, char** argv) {
+    int n;
     double gamma;
-	imageP	I1, I2, tmp_img;
-	// read input image (I1) and reserve space for output (I2)
-	I1 = IP_readImage(argv[1]);
+    imageP	I1, I2, tmp_img;
+    // read input image (I1) and reserve space for output (I2)
+    I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
 
