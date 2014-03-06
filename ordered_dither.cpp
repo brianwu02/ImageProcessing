@@ -74,13 +74,13 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     dither2[2] = 3;
     dither2[3] = 1;
 
-	// total number of pixels in image
+    // total num of pixels = length * width
     total = I1->width * I1->height;
 
     // new total after increasing by n
     new_total = (n * I1->width) * (n * I1->height);
-
-	// initialize I2 dimensions & buffers
+    
+    // initialize I2 dimensions & buffers
     I2->width  = n * (I1->width);
     I2->height = n * (I1->height);
 
@@ -89,11 +89,11 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
 
     tmp_img->image = (uchar *) malloc(total);
     I2->image  = (uchar *) malloc(new_total);
-
-	if(I2->image == NULL) {
-		cerr << "Insufficient memory\n";
-		exit(1);
-	}
+    
+    if (I2->image == NULL) {
+        cerr << "Insufficient memory\n";
+        exit(1);
+    }
     if(tmp_img->image == NULL) {
         cerr << "Insufficient memory\n";
         exit(1);
@@ -110,30 +110,31 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     for(i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
     scale = 256 / n;
-	// init lookup table for quantization
-	for(i=0; i < 256; i++) {
-		lut[i] = scale * (int) (i/scale);
+    
+    // init lookup table for quantization
+    for(i=0; i < 256; i++) {
+        lut[i] = scale * (int) (i/scale);
         cout << ((scale * (int) (i/scale)) / scale) << endl;
-}
-	// visit all input pixels and apply lut to threshold
-	for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
-}
+    }
+    // visit all input pixels and apply lut to threshold
+    for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
 
+}
 
 bool is_pow_of_2(int n) {
     // used to check if input is a power of 2.
     return (not(n == 0) and not(n & (n - 1)));
 }
 
-int clip_values(int a){
+int clip_values(int pixel_val) {
     // if a is greater than 255, clip at 255; if a is lower than 255; clip at 0;
     // else return the same value;
-    if (a >= 255) {
+    if (pixel_val >= 255) {
         return 255;
-    } else if (a <= 0) {
+    } else if (pixel_val <= 0) {
         return 0;
     } else {
-        return a;
+        return pixel_val;
     }
 }
 
