@@ -26,9 +26,9 @@ int main(int argc, char** argv) {
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
-
-	// read n and gamma from STDIN
-	n = atoi(argv[2]);
+    
+    // read n and gamma from STDIN
+    n = atoi(argv[2]);
     // check if n is a power of 2
     if (n > 3) {
         if (not(is_pow_of_2(n))) {
@@ -39,25 +39,24 @@ int main(int argc, char** argv) {
 
     gamma = atof(argv[3]);
     
-	// threshold image and save result in file
-	ordered_dither(I1, n, gamma, I2, tmp_img);
-	IP_saveImage(I2, argv[4]);
-
-	// free up image structures/memory
-	IP_freeImage(I1);
-	IP_freeImage(I2);
+    // threshold image and save result in file
+    ordered_dither(I1, n, gamma, I2, tmp_img);
+    IP_saveImage(I2, argv[4]);
+    
+    // free up image structures/memory
+    IP_freeImage(I1);
+    IP_freeImage(I2);
     IP_freeImage(tmp_img);
- 
 	return 1;
 }
 
 // Usage: ./ordered_dither in m gamma out
-void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img)
-{
-	int	 i, total, scale, new_total;
-	uchar	*in, *out, *tmp_out, lut[256];
-    uchar gamma_corrected_lut[256];
+void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     
+    int i, scale, total, new_total;
+    uchar *in, *out, *tmp_out, lut[256];
+    uchar gamma_corrected_lut[256];
+
     // initialize the dither matrices.
     int dither2[4], dither3[9];
     dither3[0] = 6;
@@ -76,19 +75,20 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img)
     dither2[3] = 1;
 
 	// total number of pixels in image
-	total = I1->width * I1->height;
+    total = I1->width * I1->height;
 
     // new total after increasing by n
     new_total = (n * I1->width) * (n * I1->height);
 
-	// init I2 dimensions and buffer
-	I2->width  = n * (I1->width);
-	I2->height = n * (I1->height);
+	// initialize I2 dimensions & buffers
+    I2->width  = n * (I1->width);
+    I2->height = n * (I1->height);
+
     tmp_img->width = I1->width;
     tmp_img->height = I1->height;
 
     tmp_img->image = (uchar *) malloc(total);
-	I2->image  = (uchar *) malloc(new_total);
+    I2->image  = (uchar *) malloc(new_total);
 
 	if(I2->image == NULL) {
 		cerr << "Insufficient memory\n";
