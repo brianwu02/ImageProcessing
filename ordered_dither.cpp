@@ -1,15 +1,21 @@
-// =====================================================================
-// Image Procesing
-// Brian Wu
-// Ordered Dithering
-// =====================================================================
-/* 1. Quantize input image to n-levels [0...n^2]
+/*
+ * Image Procesing
+ * Ordered Dithering 
+ * Brian Wu
+ *
+ * 1. Quantize input image to n-levels [0...n^2]
  * 2. Create dither matrix that gives (n^2) + 1 matrices
- *  D2 = 0 2  1-d => [0 2 3 1]
- *       3 1
- *  D3 = 6 8 4  1-d => [6 8 4 1 0 3 5 2 7]
- *       1 0 3
- *       5 2 7
+ *  D2 =  0  2  1-d => [0 2 3 1]
+ *        3  1
+ *
+ *  D3 =  6  8  4  1-d => [6 8 4 1 0 3 5 2 7]
+ *        1  0  3
+ *        5  2  7
+ *
+ *        0  8  2  10
+ *  D4 =  12 4  14 6
+ *        3  11 1  9
+ *        15 7  13 5
  */
 #include "IP.h"
 using namespace std;
@@ -57,22 +63,16 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     uchar *in, *out, *tmp_out, lut[256];
     uchar gamma_corrected_lut[256];
 
-    // initialize the dither matrices.
-    int dither2[4], dither3[9];
-    dither3[0] = 6;
-    dither3[1] = 8;
-    dither3[2] = 4;
-    dither3[3] = 1;
-    dither3[4] = 0;
-    dither3[5] = 3;
-    dither3[6] = 5;
-    dither3[7] = 2;
-    dither3[8] = 7;
+    // initialize the dither matrices. I wish there were a cleaner way :/
+    int dither2[2][2], dither3[3][3];
+    
+    dither2[0][0] = 0; dither2[0][1] = 2;
+    dither2[1][0] = 3; dither2[1][1] = 1;
 
-    dither2[0] = 0;
-    dither2[1] = 2;
-    dither2[2] = 3;
-    dither2[3] = 1;
+    dither3[0][0] = 6; dither3[0][1] = 8; dither3[0][2] = 4;
+    dither3[1][0] = 1; dither3[1][1] = 0; dither3[1][2] = 3;
+    dither3[2][0] = 5; dither3[2][1] = 2; dither3[2][2] = 7;
+
 
     // total num of pixels = length * width
     total = I1->width * I1->height;
@@ -94,12 +94,12 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
         cerr << "Insufficient memory\n";
         exit(1);
     }
-    if(tmp_img->image == NULL) {
+    if (tmp_img->image == NULL) {
         cerr << "Insufficient memory\n";
         exit(1);
     }
 
-    for(i = 0; i < 256; i++) {
+    for (i = 0; i < 256; i++) {
     gamma_corrected_lut[i] = (int) (pow((double) i / 255.0 , (1.0 / gamma)) * 255.0);
     }
     tmp_out = tmp_img->image; // tmp output image buffer after gamma correction
@@ -107,17 +107,17 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     in  = I1->image;    // input  image buffer
     
     // this should produce gamma corrected image from look up table
-    for(i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
+    for (i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
     scale = 256 / n;
     
     // init lookup table for quantization
-    for(i=0; i < 256; i++) {
+    for (i=0; i < 256; i++) {
         lut[i] = scale * (int) (i/scale);
         cout << ((scale * (int) (i/scale)) / scale) << endl;
     }
     // visit all input pixels and apply lut to threshold
-    for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
+    for (i=0; i<total; i++) out[i] = lut[tmp_out[i]];
 
 }
 
