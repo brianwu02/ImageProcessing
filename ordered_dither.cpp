@@ -22,7 +22,7 @@ using namespace std;
 void ordered_dither(imageP, int, float, imageP, imageP, int);
 int clip_values(int);
 bool is_pow_of_2(int);
-uchar quantize(double, double);
+void create_dither_matrix(int);
 
 int main(int argc, char** argv) {
     int n, m;
@@ -44,7 +44,6 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }
-
     gamma = atof(argv[3]);
     
     // threshold image and save result in file
@@ -66,8 +65,15 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     uchar gamma_corrected_lut[256];
 
     // initialize the dither matrices. I wish there were a cleaner way :/
-    int dither2[2][2], dither3[3][3];
+    int dither2[2][2], dither3[3][3], dither4[4][4];
+
+    //dither4 used to test correctness
+    dither4[0][0] = 8; dither4[0][1] = 8; dither4[0][2] = 2; dither4[0][3] = 10;
+    dither4[1][0] = 12; dither4[1][1] = 4; dither4[1][2] = 14; dither4[1][3] = 6;
+    dither4[2][0] = 3; dither4[2][1] = 11; dither4[2][2] = 1; dither4[2][3] = 9;
+    dither4[3][0] = 15; dither4[3][1] = 7; dither4[3][2] = 13; dither4[3][3] = 5;
     
+
     dither2[0][0] = 0; dither2[0][1] = 2;
     dither2[1][0] = 3; dither2[1][1] = 1;
 
@@ -75,6 +81,8 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     dither3[1][0] = 1; dither3[1][1] = 0; dither3[1][2] = 3;
     dither3[2][0] = 5; dither3[2][1] = 2; dither3[2][2] = 7;
 
+    // create m * m dither matrix;
+    int dither_matrix[m][m];
 
     // total num of pixels = length * width
     total = I1->width * I1->height;
@@ -110,37 +118,42 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     for (i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
     scale = 256 / (n);
-    cout << scale << endl;
+    //cout << scale << endl;
     // init lookup table for quantization
     for (i=0; i < 256; i++) {
         //lut[i] = scale * (int) (i/scale);
         lut[i] = (int) (scale * (i/scale)) / scale;
-        //cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
+        cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
     }
     // visit all input pixels and apply quantization to n levels via lookup table
     for (i=0; i<total; i++) {
         out[i] = lut[tmp_out[i]];
-        cout << (int) lut[tmp_out[i]] << endl;
+        //cout << (int) lut[tmp_out[i]] << endl;
     }
     int h = I2->height;
     int w = I2->width;
+    cout << "n is: " << n << endl;
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++ ) {
             int i = x % m;
             int j = y % m;
             //cout << "i: " << i << "j: " << j << endl;
 
-            cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither2[i][j]) << endl;
+            cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither4[i][j]) << endl;
 
-            if (out[y*w+x] > dither2[i][j]) {
+            /*if (out[y*w+x] > dither2[i][j]) {
                 out[y*w+x] = 255;
             } else {
                 out[y*w+x] = 0;
-            }
+            }*/
 
-            //out[y*w+x] = ((in[y*w+x] > dither2[i][j]) ? 255 : 0);
+            out[y*w+x] = ((out[y*w+x] > dither4[i][j]) ? 255 : 0);
         }
     }
+
+}
+
+void create_dither_matrix(int m) {
 
 }
 
