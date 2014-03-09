@@ -2,7 +2,6 @@
  * Image Procesing
  * Ordered Dithering 
  * Brian Wu
- *
  * 1. Quantize input image to n-levels [0...n^2]
  * 2. Create dither matrix that gives (n^2) + 1 matrices
  *  D2 =  0  2  1-d => [0 2 3 1]
@@ -20,12 +19,13 @@
 #include "IP.h"
 using namespace std;
 
-void ordered_dither(imageP, int, float, imageP, imageP);
+void ordered_dither(imageP, int, float, imageP, imageP, int);
 int clip_values(int);
 bool is_pow_of_2(int);
+uchar quantize(double, double);
 
 int main(int argc, char** argv) {
-    int n;
+    int n, m;
     double gamma;
     imageP	I1, I2, tmp_img;
     // read input image (I1) and reserve space for output (I2)
@@ -33,10 +33,12 @@ int main(int argc, char** argv) {
     I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
     
-    // read n and gamma from STDIN
-    n = atoi(argv[2]);
+    // read m and gamma from STDIN
+    m = atoi(argv[2]);
+    n = pow(m, 2);
+
     // check if n is a power of 2
-    if (n > 3) {
+    if (n != 9) {
         if (not(is_pow_of_2(n))) {
             cerr << n << " is not a power of 2. Exiting." << endl;
             exit(1);
@@ -46,7 +48,7 @@ int main(int argc, char** argv) {
     gamma = atof(argv[3]);
     
     // threshold image and save result in file
-    ordered_dither(I1, n, gamma, I2, tmp_img);
+    ordered_dither(I1, n, gamma, I2, tmp_img, m);
     IP_saveImage(I2, argv[4]);
     
     // free up image structures/memory
@@ -57,9 +59,9 @@ int main(int argc, char** argv) {
 }
 
 // Usage: ./ordered_dither in m gamma out
-void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
+void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, int m) {
     
-    int i, scale, total, new_total;
+    int i, scale, total;
     uchar *in, *out, *tmp_out, lut[256];
     uchar gamma_corrected_lut[256];
 
@@ -77,18 +79,15 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     // total num of pixels = length * width
     total = I1->width * I1->height;
 
-    // new total after increasing by n
-    new_total = (n * I1->width) * (n * I1->height);
-    
     // initialize I2 dimensions & buffers
-    I2->width  = n * (I1->width);
-    I2->height = n * (I1->height);
+    I2->width  = I1->width;
+    I2->height = I1->height;
 
     tmp_img->width = I1->width;
     tmp_img->height = I1->height;
 
     tmp_img->image = (uchar *) malloc(total);
-    I2->image  = (uchar *) malloc(new_total);
+    I2->image  = (uchar *) malloc(total);
     
     if (I2->image == NULL) {
         cerr << "Insufficient memory\n";
@@ -106,23 +105,48 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
     out = I2->image;    // output image buffer
     in  = I1->image;    // input  image buffer
     
-    // this should produce gamma corrected image from look up table
+    // this should produce gamma corrected image from look up table.
+    // and store the image in tmp_out;
     for (i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
-    scale = 256 / n;
-    
+    scale = 256 / (n);
+    cout << scale << endl;
     // init lookup table for quantization
     for (i=0; i < 256; i++) {
-        lut[i] = scale * (int) (i/scale);
-        cout << ((scale * (int) (i/scale)) / scale) << endl;
+        //lut[i] = scale * (int) (i/scale);
+        lut[i] = (int) (scale * (i/scale)) / scale;
+        //cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
     }
-    // visit all input pixels and apply lut to threshold
-    for (i=0; i<total; i++) out[i] = lut[tmp_out[i]];
+    // visit all input pixels and apply quantization to n levels via lookup table
+    for (i=0; i<total; i++) {
+        out[i] = lut[tmp_out[i]];
+        cout << (int) lut[tmp_out[i]] << endl;
+    }
+    int h = I2->height;
+    int w = I2->width;
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++ ) {
+            int i = x % m;
+            int j = y % m;
+            //cout << "i: " << i << "j: " << j << endl;
+
+            cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither2[i][j]) << endl;
+
+            if (out[y*w+x] > dither2[i][j]) {
+                out[y*w+x] = 255;
+            } else {
+                out[y*w+x] = 0;
+            }
+
+            //out[y*w+x] = ((in[y*w+x] > dither2[i][j]) ? 255 : 0);
+        }
+    }
 
 }
 
+
 bool is_pow_of_2(int n) {
-    // used to check if input is a power of 2.
+    // returns true if n is a power of 2.
     return (not(n == 0) and not(n & (n - 1)));
 }
 
