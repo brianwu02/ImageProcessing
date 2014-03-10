@@ -134,7 +134,7 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     for (i=0; i < 256; i++) {
         //lut[i] = scale * (int) (i/scale);
         lut[i] = (int) (scale * (i/scale)) / scale;
-        cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
+        //cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
     }
     // visit all input pixels and apply quantization to n levels via lookup table
     for (i=0; i<total; i++) {
