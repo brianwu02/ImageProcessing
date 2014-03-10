@@ -22,7 +22,6 @@ using namespace std;
 void ordered_dither(imageP, int, float, imageP, imageP, int);
 int clip_values(int);
 bool is_pow_of_2(int);
-void create_dither_matrix(int);
 
 int main(int argc, char** argv) {
     int n, m;
@@ -83,9 +82,18 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
         {  3, 11,  1,  9, },
         { 15,  7, 13,  5  }
     };
+    
+    int dither8[8][8] = {
+        {0, 48, 12, 60, 3, 51, 15, 63, },
+        {32, 16, 44, 28, 35, 19, 47, 31, },
+        {8, 56, 4, 52, 11, 59, 7, 55, },
+        {40, 24, 36, 20, 43, 27, 39, 23, },
+        {2, 50, 14, 62, 1, 49, 13, 61, },
+        {34, 18, 46, 30, 33, 17, 45, 29, },
+        {10, 58, 6, 54, 9, 57, 5, 53, },
+        {42, 26, 38, 22, 41, 25, 37, 21 }
+    };
 
-
-    int dither_matrix[m][m];
 
     // total num of pixels = length * width
     total = I1->width * I1->height;
@@ -135,23 +143,26 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     }
     int h = I2->height;
     int w = I2->width;
-    cout << "n is: " << n << endl;
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++ ) {
             int i = x % m;
             int j = y % m;
-
-            //cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither4[i][j]) << endl;
-
-            out[y*w+x] = ((out[y*w+x] > dither4[i][j]) ? 255 : 0);
+            
+            if (m == 3) {
+                out[y*w+x] = ((out[y*w+x] > dither3[i][j]) ? 255 : 0);
+            } else if (m == 4) {
+                out[y*w+x] = ((out[y*w+x] > dither4[i][j]) ? 255 : 0);
+            } else if (m == 8) { 
+                out[y*w+x] = ((out[y*w+x] > dither8[i][j]) ? 255 : 0);
+            } else {
+                // should not come here anyway.
+                cerr << "something went wrong\n";
+            }
         }
     }
-
 }
 
-void create_dither_matrix(int m) {
 
-}
 
 
 bool is_pow_of_2(int n) {
