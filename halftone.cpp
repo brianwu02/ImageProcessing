@@ -58,7 +58,7 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
         {61, 54, 43, 29, 28, 42, 53, 60}
     };
 
-    total = I1->width * I2->height;
+    total = I1->width * I1->height;
 
     I2->width = m * I1->width;
     I2->height = m * I1->height;
@@ -68,6 +68,8 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
 
     cout << (int) new_total << endl;
 
+    out = I2->image;
+    in = I1->image;
 
     if (I2->image == NULL) {
         cerr << "Not enough memory\n";
@@ -76,12 +78,13 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
 
     // create gamma correction lookup table
     for (i=0; i<256; i++) {
-        gamma_corrected_lut[i] = 1;//(int) (pow((double) i / 255.0, (1.0 / gamma)) * 255.0);
+        gamma_corrected_lut[i] = (int) (pow((double) i / 255.0, (1.0 / gamma)) * 255.0);
     }
     // gamma correct the input Image
-    
+
     for (i=0; i<total; i++) {
         in[i] = gamma_corrected_lut[in[i]];
+        cout << (int) in[i] << endl;
     }
     // define scale & create quantization lookup table
     // where scale is broken up in to m grayscale values
@@ -90,9 +93,28 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
     scale = 256 / n;
     for (i=0; i<256; i++) {
         quant_lut[i] = (int) (scale * (i / scale)) / scale;
-        cout << (int) quant_lut[i] << endl;
+        //cout << (int) quant_lut[i] << endl;
     }
 
-    // visit all input pixels and apply quantization t m levels
+    // visit all input pixels and apply quantization to m levels
+    for (i=0; i<total; i++) {
+        in[i] = quant_lut[in[i]];
+        //cout << (int) in[i] << endl;
+    }
+    
+    int h = I2->height;
+    int w = I2->width;
+    /*
+    for (int y=0; y<h; y++){
+        for (int x=0; x<w; x++) {
+            // i, j coordinates for the dot-cluster matrix.
+            int i = x % m;
+            int j = y % m;
+
+            out[y*w+x] = ((out[y*w+x] > clusterDotMatrix[i][j]) ? 255 : 0);
+            
+        }
+    }*/
+
 
 }
