@@ -65,23 +65,26 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     uchar gamma_corrected_lut[256];
 
     // initialize the dither matrices. I wish there were a cleaner way :/
-    int dither2[2][2], dither3[3][3], dither4[4][4];
 
-    //dither4 used to test correctness
-    dither4[0][0] = 0; dither4[0][1] = 8; dither4[0][2] = 2; dither4[0][3] = 10;
-    dither4[1][0] = 12; dither4[1][1] = 4; dither4[1][2] = 14; dither4[1][3] = 6;
-    dither4[2][0] = 3; dither4[2][1] = 11; dither4[2][2] = 1; dither4[2][3] = 9;
-    dither4[3][0] = 15; dither4[3][1] = 7; dither4[3][2] = 13; dither4[3][3] = 5;
-    
+    int dither2[2][2] = {
+        { 0, 2, },
+        { 3, 1  }
+    };
 
-    dither2[0][0] = 0; dither2[0][1] = 2;
-    dither2[1][0] = 3; dither2[1][1] = 1;
+    int dither3[3][3] = {
+        { 6, 8, 4, },
+        { 1, 0, 3, },
+        { 5, 2, 7  }
+    };
 
-    dither3[0][0] = 6; dither3[0][1] = 8; dither3[0][2] = 4;
-    dither3[1][0] = 1; dither3[1][1] = 0; dither3[1][2] = 3;
-    dither3[2][0] = 5; dither3[2][1] = 2; dither3[2][2] = 7;
+    int dither4[4][4] = {
+        {  0,  8,  2, 10, }, 
+        { 12,  4, 14,  6, },
+        {  3, 11,  1,  9, },
+        { 15,  7, 13,  5  }
+    };
 
-    // create m * m dither matrix;
+
     int dither_matrix[m][m];
 
     // total num of pixels = length * width
@@ -137,15 +140,8 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
         for (int x = 0; x < w; x++ ) {
             int i = x % m;
             int j = y % m;
-            //cout << "i: " << i << "j: " << j << endl;
 
-            cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither4[i][j]) << endl;
-
-            /*if (out[y*w+x] > dither2[i][j]) {
-                out[y*w+x] = 255;
-            } else {
-                out[y*w+x] = 0;
-            }*/
+            //cout << "in pixel is: " << (int) (out[y*w+x]) << " ;dither is: " << (int) (dither4[i][j]) << endl;
 
             out[y*w+x] = ((out[y*w+x] > dither4[i][j]) ? 255 : 0);
         }
