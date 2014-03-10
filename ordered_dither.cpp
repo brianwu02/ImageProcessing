@@ -68,7 +68,7 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     int dither2[2][2], dither3[3][3], dither4[4][4];
 
     //dither4 used to test correctness
-    dither4[0][0] = 8; dither4[0][1] = 8; dither4[0][2] = 2; dither4[0][3] = 10;
+    dither4[0][0] = 0; dither4[0][1] = 8; dither4[0][2] = 2; dither4[0][3] = 10;
     dither4[1][0] = 12; dither4[1][1] = 4; dither4[1][2] = 14; dither4[1][3] = 6;
     dither4[2][0] = 3; dither4[2][1] = 11; dither4[2][2] = 1; dither4[2][3] = 9;
     dither4[3][0] = 15; dither4[3][1] = 7; dither4[3][2] = 13; dither4[3][3] = 5;
