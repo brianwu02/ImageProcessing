@@ -1,8 +1,6 @@
 
-unordered_dither:
-    ./unordered_dither in n gamma out
-
-ordered dithering
+unordered_dither *infile* *gammaRatio* *n* *outfile* where n is quantization levels.
+ordered dither
 
 ## Default Images before processing
 ##### mad256.png
