@@ -1,4 +1,6 @@
 
+Files not included in repo: IP.h, IPutil.cpp, makefile.
+
 unordered_dither *infile* *gammaRatio* *n* *outfile* where n is quantization levels.
 ordered dither
 
