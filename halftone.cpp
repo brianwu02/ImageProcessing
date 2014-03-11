@@ -51,11 +51,17 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
         {62, 57, 48, 36, 37, 49, 58, 63,},
         {56, 47, 35, 21, 22, 38, 50, 59,},
         {46, 34, 20, 10, 11, 23, 39, 51,},
-        {33, 19, 9, 3, 0, 4, 12, 24,},
-        {32, 18, 8, 2, 1, 5, 13, 25,},
-        {45, 31, 17, 7, 6, 14, 26, 40,},
+        {33, 19,  9,  3,  0,  4, 12, 24,},
+        {32, 18,  8,  2,  1,  5, 13, 25,},
+        {45, 31, 17,  7,  6, 14, 26, 40,},
         {55, 44, 30, 16, 15, 27, 41, 52,},
         {61, 54, 43, 29, 28, 42, 53, 60}
+    };
+
+    int clusterDot[3][3] = {
+        {6, 8, 4,},
+        {1, 0, 3,},
+        {5, 2, 7 }
     };
 
     total = I1->width * I1->height;
@@ -99,11 +105,34 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
     // visit all input pixels and apply quantization to m levels
     for (i=0; i<total; i++) {
         in[i] = quant_lut[in[i]];
-        //cout << (int) in[i] << endl;
+        cout << (int) in[i] << endl;
+    }
+    int w = I1->width;
+    int h = I1->height;
+
+    // loop over the "large" pixels
+    for (int y=0; y<=h; y++) {
+        for (int x=0; x<=w; x++) {
+            // this loop here happens 256 * 256 times.
+            // (y * w) + ( x ) 
+            for (int j=0; j<m; j++) {
+                for (int i=0; i<m; i++) {
+                    //out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > clusterDot[i][j]) ? 255 : 0);
+                    out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > clusterDotMatrix[i][j]) ? 255 : 0);
+                    //count_arr[(i+(m*j*m) + m*(x+m*y*w))]++;
+                    //cout << (int) count_arr[(i+(m*j*m) + m*(x+m*y*w))] << endl;
+                    //cout << (int) (i+(m*j*m) + m*(x+m*y*w)) << endl;
+                    //cout << (int) in[y*w+x] << endl;
+                }
+            }
+        }
     }
 
+    
+    /*
     int h = I2->height;
     int w = I2->width;
+
     for (int y=0; y<h; y++){
         for (int x=0; x<w; x++) {
                 // i, j coordinates for the dot-cluster matrix.
@@ -114,11 +143,11 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
             int new_x = x % m;
             int new_w = w / m;
 
-            out[y*w + x] = ((in[x*y + new_w] > clusterDotMatrix[i][j]) ? 255 : 0);
+            out[y*w+x] = ((in[x*y + new_w] > clusterDotMatrix[i][j]) ? 255 : 0);
                 //cout << (int) in[y*w+x] << " : " << (int) clusterDotMatrix[i][j] << endl;
                 //cout << (int) (y*w+x) << endl;
         }
-    }
+    }*/
 
 
 }
