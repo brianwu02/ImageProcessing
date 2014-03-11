@@ -5,8 +5,6 @@ unordered_dither:
 ordered dithering
 
 ## Default Images before processing
-### empire.png
-![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/empire.png)
 ### mad256.png
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/mad256.png)
 ### maddot.png
@@ -19,4 +17,7 @@ ordered dithering
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/star.png)
 ### text.png
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/text.png)
+### empire.png
+![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/empire.png)
+
 
