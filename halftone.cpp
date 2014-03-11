@@ -84,7 +84,7 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
 
     for (i=0; i<total; i++) {
         in[i] = gamma_corrected_lut[in[i]];
-        cout << (int) in[i] << endl;
+        //cout << (int) in[i] << endl;
     }
     // define scale & create quantization lookup table
     // where scale is broken up in to m grayscale values
@@ -101,20 +101,24 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
         in[i] = quant_lut[in[i]];
         //cout << (int) in[i] << endl;
     }
-    
+
     int h = I2->height;
     int w = I2->width;
-    /*
     for (int y=0; y<h; y++){
         for (int x=0; x<w; x++) {
-            // i, j coordinates for the dot-cluster matrix.
+                // i, j coordinates for the dot-cluster matrix.
             int i = x % m;
             int j = y % m;
 
-            out[y*w+x] = ((out[y*w+x] > clusterDotMatrix[i][j]) ? 255 : 0);
-            
+            int new_y = y % m;
+            int new_x = x % m;
+            int new_w = w / m;
+
+            out[y*w + x] = ((in[x*y + new_w] > clusterDotMatrix[i][j]) ? 255 : 0);
+                //cout << (int) in[y*w+x] << " : " << (int) clusterDotMatrix[i][j] << endl;
+                //cout << (int) (y*w+x) << endl;
         }
-    }*/
+    }
 
 
 }
