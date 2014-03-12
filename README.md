@@ -18,7 +18,7 @@ If the value of the quantized input pixel is larger than the value in the cluste
 output pixel. 
 
 Here is where the magic happens:
-
+`
 for (int y=0; y<h; y++){
     for (int x=0; x<w; x++) {
         for (int j=0; j<m; j++) {
@@ -29,7 +29,7 @@ for (int y=0; y<h; y++){
         }
     }
 }
-
+`
 *(m * y * nh) + (j * nw) + i + (m * x)* maps a 2d array to a 1d array. where each input pixel is now represented
 by an m * m cluster dot matrix.
 
