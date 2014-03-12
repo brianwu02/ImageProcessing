@@ -64,6 +64,11 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
         {5, 2, 7 }
     };
 
+    int cluster[2][2] = {
+        {1, 2},
+        {3, 0}
+    };
+
     total = I1->width * I1->height;
 
     I2->width = m * I1->width;
@@ -72,7 +77,7 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
     new_total = (m * I1->width) * (m * I2->height);
     I2->image = (unsigned char *) malloc(new_total);
 
-    cout << (int) new_total << endl;
+    //cout << (int) new_total << endl;
 
     out = I2->image;
     in = I1->image;
@@ -105,29 +110,42 @@ void halftone(imageP I1, int m, float gamma, imageP I2) {
     // visit all input pixels and apply quantization to m levels
     for (i=0; i<total; i++) {
         in[i] = quant_lut[in[i]];
-        cout << (int) in[i] << endl;
     }
     int w = I1->width;
     int h = I1->height;
 
+    for (i=0; i<new_total; i++) {
+        out[i] = 128;
+    }
+
+    cout << "m: " << m << endl;
+    cout << "h: " << h << endl;
+    cout << "w: " << w << endl;
+
+    int nw = I2->width;
+    int nh = I2->height;
     // loop over the "large" pixels
-    for (int y=0; y<=h; y++) {
-        for (int x=0; x<=w; x++) {
+    for (int y=0; y<h; y++) {
+        for (int x=0; x<w; x++) {
             // this loop here happens 256 * 256 times.
             // (y * w) + ( x ) 
             for (int j=0; j<m; j++) {
                 for (int i=0; i<m; i++) {
+                    //out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > cluster[i][j]) ? 255 : 0);
+                    
                     //out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > clusterDot[i][j]) ? 255 : 0);
-                    out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > clusterDotMatrix[i][j]) ? 255 : 0);
-                    //count_arr[(i+(m*j*m) + m*(x+m*y*w))]++;
-                    //cout << (int) count_arr[(i+(m*j*m) + m*(x+m*y*w))] << endl;
-                    //cout << (int) (i+(m*j*m) + m*(x+m*y*w)) << endl;
-                    //cout << (int) in[y*w+x] << endl;
+
+                    out[(m*y*nh) + (j*nw) + i + (m*x)] = ((in[y*w+x] > clusterDot[i][j])? 255 : 0);
+                    //cout << (int) ((m*y) * (m*m)) + (j + m*m) + i + (m * x) << endl;
+                    //cout << (int) clusterDot[i][j] << endl;
+                    //out[(y+(m*j)) * m * (x + (m*i))] = ((in[y*w+x] > clusterDot[i][j]) ? 255 : 0);
+
+                    //cout << (int) in[y*w+x] << " vs " << (int) clusterDot[i][j] << endl;
+                    //out[(i+(m*j*m) + m*(x+m*y*w))] = ((in[y*w+x] > clusterDotMatrix[i][j]) ? 255 : 0);
                 }
             }
         }
     }
-
     
     /*
     int h = I2->height;
