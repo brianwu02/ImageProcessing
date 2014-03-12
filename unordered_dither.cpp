@@ -1,36 +1,32 @@
-// =====================================================================
 // Image Procesing
 // Brian Wu
 // Unordered Dithering
-// =====================================================================
 #include "IP.h"
 using namespace std;
 
 void unordered_dither(imageP, int, float, imageP, imageP);
 int clip_values(int);
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// main:
-int main(int argc, char** argv)
-{
-	int	n;
+
+int main(int argc, char** argv) {
+    int	n;
     double gamma;
-	imageP	I1, I2, tmp_img;
-	// read input image (I1) and reserve space for output (I2)
-	I1 = IP_readImage(argv[1]);
-	I2 = NEWIMAGE;
+    imageP	I1, I2, tmp_img;
+    // read input image (I1) and reserve space for output (I2)
+    I1 = IP_readImage(argv[1]);
+    I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
 
-	// read n and gamma from STDIN
-	n = atoi(argv[2]);
+    // read n and gamma from STDIN
+    n = atoi(argv[2]);
     gamma = atof(argv[3]);
 
-	// threshold image and save result in file
-	unordered_dither(I1, n, gamma, I2, tmp_img);
-	IP_saveImage(I2, argv[4]);
+    // threshold image and save result in file
+    unordered_dither(I1, n, gamma, I2, tmp_img);
+    IP_saveImage(I2, argv[4]);
 
-	// free up image structures/memory
-	IP_freeImage(I1);
-	IP_freeImage(I2);
+    // free up image structures/memory
+    IP_freeImage(I1);
+    IP_freeImage(I2);
     IP_freeImage(tmp_img);
     cout << "done" << endl;
 
