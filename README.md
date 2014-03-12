@@ -6,9 +6,11 @@ ordered dither
 
 halftone:
 
-1. quantize the input image to n levels. Each pixel should now be represented by an m*m cluster matrix.
+1. Gamma correct the input image.
 
-2. Compare each input pixel to a cluster dot matrix. If the quantized pixel value
+2. quantize the input image to n levels. Each pixel should now be represented by an m*m cluster matrix.
+
+3. Compare each input pixel to a cluster dot matrix. If the quantized pixel value
 is greater than value found in cluster dot matrix, turn pixel value to 255, otherwise turn to 0.
 
 Explanation of 4 deep for loops so I dont forget:
@@ -19,7 +21,7 @@ output pixel.
 
 Here is where the magic happens:
 
-```
+```C++
 for (int y=0; y<h; y++){
     for (int x=0; x<w; x++) {
         for (int j=0; j<m; j++) {
