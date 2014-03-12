@@ -34,27 +34,27 @@ int main(int argc, char** argv) {
 }
 
 // Usage: ./unordered_dither in n gamma out
-void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img)
-{
-	int	 i, total, scale;
-	uchar	*in, *out, *tmp_out, lut[256];
+void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) {
+    int	 i, total, scale;
+    uchar	*in, *out, *tmp_out, lut[256];
     uchar gamma_corrected_lut[256];
 
-	// total number of pixels in image
-	total = I1->width * I1->height;
+    // total number of pixels in image
+    total = I1->width * I1->height;
 
-	// init I2 dimensions and buffer
-	I2->width  = I1->width;
-	I2->height = I1->height;
+    // init I2 dimensions and buffer
+    I2->width  = I1->width;
+    I2->height = I1->height;
     tmp_img->width = I1->width;
     tmp_img->height = I1->height;
 
     tmp_img->image = (uchar *) malloc(total);
-	I2->image  = (uchar *) malloc(total);
-	if(I2->image == NULL) {
-		cerr << "Insufficient memory\n";
-		exit(1);
-	}
+    I2->image  = (uchar *) malloc(total);
+
+    if(I2->image == NULL) {
+        cerr << "Insufficient memory\n";
+        exit(1);
+    }
     if(tmp_img->image == NULL) {
         cerr << "Insufficient memory\n";
     }
@@ -65,7 +65,7 @@ void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img)
     tmp_out = tmp_img->image; // tmp output image buffer after gamma correction
     out = I2->image;    // output image buffer
     in  = I1->image;    // input  image buffer
-    
+
     // this should produce gamma corrected image from look up table
     for(i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
@@ -90,12 +90,12 @@ void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img)
     }
 
     scale = 256 / n;
-	// init lookup table for quantization
-	for(i=0; i<256 ; i++) {
-		lut[i] = scale * (int) (i/scale);
-}
-	// visit all input pixels and apply lut to threshold
-	for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
+    // init lookup table for quantization
+    for(i=0; i<256 ; i++) {
+        lut[i] = scale * (int) (i/scale);
+    }
+        // visit all input pixels and apply lut to threshold
+        for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
 }
 
 int clip_values(int a) {
