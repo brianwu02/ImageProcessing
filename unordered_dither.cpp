@@ -1,6 +1,8 @@
-// Image Procesing
-// Brian Wu
-// Unordered Dithering
+/**
+ * Image Procesing
+ * Brian Wu
+ * Unordered Dithering
+ */
 #include "IP.h"
 using namespace std;
 
@@ -51,15 +53,15 @@ void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) 
     tmp_img->image = (uchar *) malloc(total);
     I2->image  = (uchar *) malloc(total);
 
-    if(I2->image == NULL) {
+    if (I2->image == NULL) {
         cerr << "Insufficient memory\n";
         exit(1);
     }
-    if(tmp_img->image == NULL) {
+    if (tmp_img->image == NULL) {
         cerr << "Insufficient memory\n";
     }
 
-    for(i = 0; i < 256; i++) {
+    for (i = 0; i < 256; i++) {
     gamma_corrected_lut[i] = (int) (pow((double) i / 255.0 , (1.0 / gamma)) * 255.0);
     }
     tmp_out = tmp_img->image; // tmp output image buffer after gamma correction
@@ -67,24 +69,21 @@ void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) 
     in  = I1->image;    // input  image buffer
 
     // this should produce gamma corrected image from look up table
-    for(i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
+    for (i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
     // create bias
     int bias = ((MXGRAY / n) * 0.5);
-    // there may be a bug here
-    //cout << "bias: " << bias << endl;
 
+    // create a seed for rand() function
     srand(time(0));
+
     // apply random dither to Image
-    for(i = 0; i < total; i++ ) {
+    for (i = 0; i < total; i++ ) {
         int randomized_bias = rand() % bias;
-        //cout << randomized_bias << endl;
-        // on even, add. bitwise faster than modulo.
-        if((i & 1) == 0) {
+        // on even, add. bitwise faster than modulo. on odd, subtract
+        if ((i & 1) == 0) {
             tmp_out[i] = clip_values(tmp_out[i] + randomized_bias);
-        }
-        // on odd, subtract
-        else {
+        } else {
             tmp_out[i] = clip_values(tmp_out[i] - randomized_bias);
         }
     }
@@ -94,8 +93,9 @@ void unordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img) 
     for(i=0; i<256 ; i++) {
         lut[i] = scale * (int) (i/scale);
     }
-        // visit all input pixels and apply lut to threshold
-        for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
+    
+    // visit all input pixels and apply lut to threshold
+    for(i=0; i<total; i++) out[i] = lut[tmp_out[i]];
 }
 
 int clip_values(int a) {
@@ -105,7 +105,7 @@ int clip_values(int a) {
     if (a >= 255) {
         return 255;
     }
-    else if(a <= 0) {
+    else if (a <= 0) {
         return 0;
     }
     else {
