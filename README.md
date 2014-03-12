@@ -1,5 +1,6 @@
 ## Image Processing
 
+
 Files not included in repo: IP.h, IPutil.cpp, makefile.
 
 unordered_dither *infile* *gammaRatio* *n* *outfile* where n is quantization levels.
@@ -38,7 +39,12 @@ for (int y=0; y<h; y++){
 *(m * y * nh) + (j * nw) + i + (m * x)* maps a 2d array to a 1d array. where each input pixel is now represented
 by an m * m cluster dot matrix.
 
-## Default Images before processing
+#### ordered_dithering.cpp
+
+#### unordered_dithering.cpp
+
+
+## Images before processing
 ##### mad256.png
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/mad256.png)
 ##### mad256.png after ordered dithering m=8 and gamma ratio 1.0
