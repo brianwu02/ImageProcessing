@@ -1,4 +1,4 @@
-/*
+/**
  * Image Procesing
  * Ordered Dithering 
  * Brian Wu
@@ -66,32 +66,32 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     // initialize the dither matrices. I wish there were a cleaner way :/
 
     int dither2[2][2] = {
-        { 0, 2, },
-        { 3, 1  }
+        {0, 2,},
+        {3, 1}
     };
 
     int dither3[3][3] = {
-        { 6, 8, 4, },
-        { 1, 0, 3, },
-        { 5, 2, 7  }
+        {6, 8, 4,},
+        {1, 0, 3,},
+        {5, 2, 7}
     };
 
     int dither4[4][4] = {
-        {  0,  8,  2, 10, }, 
-        { 12,  4, 14,  6, },
-        {  3, 11,  1,  9, },
-        { 15,  7, 13,  5  }
+        {0,  8,  2, 10,}, 
+        {12,  4, 14,  6,},
+        {3, 11,  1,  9,},
+        {15,  7, 13,  5}
     };
     
     int dither8[8][8] = {
-        {0, 48, 12, 60, 3, 51, 15, 63, },
-        {32, 16, 44, 28, 35, 19, 47, 31, },
-        {8, 56, 4, 52, 11, 59, 7, 55, },
-        {40, 24, 36, 20, 43, 27, 39, 23, },
-        {2, 50, 14, 62, 1, 49, 13, 61, },
-        {34, 18, 46, 30, 33, 17, 45, 29, },
-        {10, 58, 6, 54, 9, 57, 5, 53, },
-        {42, 26, 38, 22, 41, 25, 37, 21 }
+        {0, 48, 12, 60, 3, 51, 15, 63,},
+        {32, 16, 44, 28, 35, 19, 47, 31,},
+        {8, 56, 4, 52, 11, 59, 7, 55,},
+        {40, 24, 36, 20, 43, 27, 39, 23,},
+        {2, 50, 14, 62, 1, 49, 13, 61,},
+        {34, 18, 46, 30, 33, 17, 45, 29,},
+        {10, 58, 6, 54, 9, 57, 5, 53,},
+        {42, 26, 38, 22, 41, 25, 37, 21}
     };
 
 
@@ -117,7 +117,7 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
         exit(1);
     }
 
-    for (i = 0; i < 256; i++) {
+    for (i=0; i<256; i++) {
     gamma_corrected_lut[i] = (int) (pow((double) i / 255.0 , (1.0 / gamma)) * 255.0);
     }
     tmp_out = tmp_img->image; // tmp output image buffer after gamma correction
@@ -128,19 +128,18 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
     // and store the image in tmp_out;
     for (i=0; i<total; i++) tmp_out[i] = gamma_corrected_lut[ in[i] ];
 
-    scale = 256 / (n);
+    scale = 256 / n;
     //cout << scale << endl;
     // init lookup table for quantization
     for (i=0; i < 256; i++) {
         //lut[i] = scale * (int) (i/scale);
         lut[i] = (int) (scale * (i/scale)) / scale;
-        //cout << i << ":" << ((int) (scale * (i/scale)) / scale ) << endl;
     }
     // visit all input pixels and apply quantization to n levels via lookup table
     for (i=0; i<total; i++) {
         out[i] = lut[tmp_out[i]];
-        //cout << (int) lut[tmp_out[i]] << endl;
     }
+
     int h = I2->height;
     int w = I2->width;
     for (int y = 0; y < h; y++) {
@@ -161,8 +160,6 @@ void ordered_dither(imageP I1, int n, float gamma, imageP I2, imageP tmp_img, in
         }
     }
 }
-
-
 
 
 bool is_pow_of_2(int n) {
