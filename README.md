@@ -17,6 +17,19 @@ For each big pixel iteration, compare the input pixel m*m times against each ent
 If the value of the quantized input pixel is larger than the value in the cluster matrix, then turn on the
 output pixel. 
 
+Here is where the magic happens:
+
+for (int y=0; y<h; y++){
+    for (int x=0; x<w; x++) {
+        for (int j=0; j<m; j++) {
+            for (int i=0; i<m; i++){
+                out[(m*y*nh) + (j*nw) + i + (m*x)] = ((in[y*w+x] > clusterDot[i][j])] 255 : 0);
+
+            }
+        }
+    }
+}
+
 *(m * y * nh) + (j * nw) + i + (m * x)* maps a 2d array to a 1d array. where each input pixel is now represented
 by an m * m cluster dot matrix.
 
