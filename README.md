@@ -59,7 +59,5 @@ by an m * m cluster dot matrix.
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/star.png)
 ##### text.png
 ![alt tag](https://raw.github.com/brianwu02/ImageProcessing/master/images/text.png)
-##### empire.png
-![alt tag](https://raw.github.com/brianwu02/ImageProcessing/mastear/images/empire.png)
 
 
