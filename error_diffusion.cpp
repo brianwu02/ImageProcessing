@@ -8,7 +8,7 @@
 using namespace std;
 
 void error_diffusion(imageP, int, int, double, imageP);
-void copyRowToCircularBuffer(int);
+void copyRowToCircularBuffer(int, int, *int);
 
 int main(int argc, char** argv) {
     int mtd, serpentine;
@@ -35,8 +35,9 @@ int main(int argc, char** argv) {
 }
 
 void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2) {
-    int i, total, scale;
-    unsigned char *in, *out;
+    int i, total, threshold;
+    unsigned char *in;
+    unsigned char *out;
     unsigned char gammaCorrectionLUT[256];
     unsigned char thresholdingLUT[256];
 
@@ -65,18 +66,42 @@ void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2
     }
 
     // create thresholding scale
-    scale = 256 / 2;
+    threshold = 256 / 2;
     
-    // create threshold LUT
-    for (i=0; i<256; i++) {
-        thresholdingLUT[i] = (int) (scale * (i / scale));
+    // create circular buffer. this one here is only 2 'widths' long.
+    short buf[256];
+
+    int h = I2->height;
+    int w = I2->width;
+
+    int *in1, *in2;
+
+    copyRowToCircularBuffer(0, w, buf);
+    for (int y=0; y<h; y++) {
+        for (int x=0; x<w; x++) {
+
+
+            *out = (*in1 < threshold) ? 255 : 0;
+            
+            int e = *in1 - *out;
+
+            in1[1] += (e*7/16.0);
+            in2[-1] += (e*3/16.0);
+            in2[0] += (e*5/16.0);
+            in2[1] += (e*1/16.0);
+            
+            // advance circular buffer pointers
+            in1++;
+            in2++;
+            // advance output buffer;
+            out++;
+
+
+        }
     }
-
-    // apply thresholding to input Image
-    for (i=0; i<total; i++) {
-        in[i] = thresholdingLUT[in[i]];
-    }
-
-
-
 }
+
+void copyRowToCircularBuffer(int y, int width, short buf) {
+    int row = (y * width);
+    }
+
