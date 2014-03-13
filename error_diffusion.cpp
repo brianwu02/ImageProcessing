@@ -79,7 +79,7 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     int h = I2->height;
     int w = I2->width;
 
-    short buf[w*2];
+    short buf[(w*2) + 4]; // add 4 to pad with zeros
 
     int *in1, *in2;
 
@@ -89,9 +89,8 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     for (i=0; i<256; i++) {
         cout << "i: " <<(int) in[256+i] << "buf: " << (int) buf[256+i] << endl;
     }
-
-
-    /*for (int y=0; y<h; y++) {
+    
+    for (int y=0; y<h; y++) {
         for (int x=0; x<w; x++) {
             *out = (*in1 < threshold) ? 255 : 0;
             int e = *in1 - *out;
@@ -109,7 +108,7 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
 
 
         }
-    }*/
+    }
 }
 
 void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *buf) {
@@ -119,9 +118,14 @@ void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *bu
     int row = (y * width); // keep track of the row we are in for inArray
     short *buffer = buf; // size is width * 2
     unsigned char *in = inArray; // this is pointer to input array
+
+    // pad the buffer with 0's
+    buf[0] = 0;
+    buf[width-1] = 0;
+    buf[width] = 0;
+    buf[(width*2)-1] = 0;
     
-    
-    for (int i=0; i<width; i++) {
+    for (int i=1; i<width+1; i++) {
         if ((y % 2) == 0) {
             // copy to first portion of buffer
             int head = i;
