@@ -5,6 +5,7 @@
  * Usage: error_diffusion in mtd serpentine gamma out
  */
 #include "IP.h"
+#include <typeinfo>
 using namespace std;
 
 void error_diffusion(imageP, int, int, float, imageP);
@@ -19,6 +20,7 @@ int main(int argc, char** argv) {
     cout << "mtd: " << argv[2] << endl;
     cout << "serpentine: " << argv[3] << endl;
     cout << "gamma: " << argv[4] << endl;
+    cout << "outfile " << argv[5] << endl;
 
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
@@ -76,29 +78,34 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     
     // create circular buffer. this one here is only 2 'widths' long.
 
-    int h = I2->height;
-    int w = I2->width;
-
+    int h = I1->height;
+    int w = I1->width;
     short buf[(w*2) + 4]; // add 4 to pad with zeros
-
-    int *in1, *in2;
-
+    short *in1, *in2;
+    
     // copy row 0 to the circular buffer
     copyRowToCircularBuffer(0, w, in, buf);
-    copyRowToCircularBuffer(1, w, in, buf);
-    for (i=0; i<256; i++) {
-        cout << "i: " <<(int) in[256+i] << "buf: " << (int) buf[256+i] << endl;
-    }
     
     for (int y=0; y<h; y++) {
-        for (int x=0; x<w; x++) {
-            *out = (*in1 < threshold) ? 255 : 0;
-            int e = *in1 - *out;
+        copyRowToCircularBuffer(y+1, w, in, buf);
 
-            in1[1] += (e*7/16.0);
-            in2[-1] += (e*3/16.0);
-            in2[0] += (e*5/16.0);
-            in2[1] += (e*1/16.0);
+        in1 = &buf[0] + 1;
+        in2 = &buf[w] + 1;
+
+        for (int x=0; x<w; x++) {
+            *out = (*in1 < threshold) ? 0 : 255;
+            short e = *in1 - *out;
+
+            cout << "*in1: " << *in1 << endl;
+
+            //cout << "*in1: " << *in1 << " *out:" << (int) *out << endl;
+
+            //cout << (int) (*out) << endl;
+
+            //in1[1] += (e*7/16.0);
+            //in2[-1] += (e*3/16.0);
+            //in2[0] += (e*5/16.0);
+            //in2[1] += (e*1/16.0);
             
             // advance circular buffer pointers
             in1++;
@@ -120,10 +127,10 @@ void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *bu
     unsigned char *in = inArray; // this is pointer to input array
 
     // pad the buffer with 0's
-    buf[0] = 0;
-    buf[width-1] = 0;
-    buf[width] = 0;
-    buf[(width*2)-1] = 0;
+    buf[0] = 1;
+    buf[width-1] = 1;
+    buf[width] = 1;
+    buf[(width*2)-1] = 1;
     
     for (int i=1; i<width+1; i++) {
         if ((y % 2) == 0) {
@@ -143,5 +150,5 @@ void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *bu
 
 
 
-    }
+}
 
