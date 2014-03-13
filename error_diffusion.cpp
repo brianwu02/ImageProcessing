@@ -8,7 +8,7 @@
 using namespace std;
 
 void error_diffusion(imageP, int, int, double, imageP);
-void copyRowToCircularBuffer(int, int, *int);
+void copyRowToCircularBuffer(int, int, unsigned char *inArray, short *buf);
 
 int main(int argc, char** argv) {
     int mtd, serpentine;
@@ -21,6 +21,11 @@ int main(int argc, char** argv) {
     mtd = atoi(argv[2]);
     serpentine = atoi(argv[3]);
     gamma = atof(argv[4]);
+
+    cout << "input: " << argv[1] << endl;
+    cout << "mtd: " << argv[2] << endl;
+    cout << "serpentine: " << argv[3] << endl;
+    cout << "gamma: " << argv[4] << endl;
 
     error_diffusion(I1, mtd, serpentine, gamma, I2);
 
@@ -69,15 +74,21 @@ void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2
     threshold = 256 / 2;
     
     // create circular buffer. this one here is only 2 'widths' long.
-    short buf[256];
 
     int h = I2->height;
     int w = I2->width;
 
+    short buf[w*2];
+
     int *in1, *in2;
 
-    copyRowToCircularBuffer(0, w, buf);
-    for (int y=0; y<h; y++) {
+    for (i=0; i<total; i++) {
+        cout << (int) in[i] << endl;
+    }
+
+    copyRowToCircularBuffer(0, 0, in, buf);
+    cout << buf[0] << endl;
+    /*for (int y=0; y<h; y++) {
         for (int x=0; x<w; x++) {
 
 
@@ -98,10 +109,25 @@ void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2
 
 
         }
-    }
+    }*/
 }
 
-void copyRowToCircularBuffer(int y, int width, short buf) {
+void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *buf) {
+    // copy the row to circlar buffer
+    
     int row = (y * width);
+    short *buffer = buf;
+    unsigned char *in = inArray;
+
+    cout << (int) in[200] << endl;
+    
+    buffer[0] = 5;
+
+    cout << buffer << endl;
+    cout << buffer[0] << endl;
+    
+
+
+
     }
 
