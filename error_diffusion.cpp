@@ -7,13 +7,18 @@
 #include "IP.h"
 using namespace std;
 
-void error_diffusion(imageP, int, int, double, imageP);
+void error_diffusion(imageP, int, int, float, imageP);
 void copyRowToCircularBuffer(int, int, unsigned char *inArray, short *buf);
 
 int main(int argc, char** argv) {
     int mtd, serpentine;
-    double gamma;
+    float gamma;
     imageP I1, I2;
+
+    cout << "input: " << argv[1] << endl;
+    cout << "mtd: " << argv[2] << endl;
+    cout << "serpentine: " << argv[3] << endl;
+    cout << "gamma: " << argv[4] << endl;
 
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
@@ -22,10 +27,6 @@ int main(int argc, char** argv) {
     serpentine = atoi(argv[3]);
     gamma = atof(argv[4]);
 
-    cout << "input: " << argv[1] << endl;
-    cout << "mtd: " << argv[2] << endl;
-    cout << "serpentine: " << argv[3] << endl;
-    cout << "gamma: " << argv[4] << endl;
 
     error_diffusion(I1, mtd, serpentine, gamma, I2);
 
@@ -39,7 +40,7 @@ int main(int argc, char** argv) {
     return 1;
 }
 
-void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2) {
+void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2) {
     int i, total, threshold;
     unsigned char *in;
     unsigned char *out;
@@ -82,9 +83,6 @@ void error_diffusion(imageP I1, int mtd, int serpentine, double gamma, imageP I2
 
     int *in1, *in2;
 
-    for (i=0; i<total; i++) {
-        cout << (int) in[i] << endl;
-    }
 
     copyRowToCircularBuffer(0, 0, in, buf);
     cout << buf[0] << endl;
