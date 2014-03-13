@@ -83,15 +83,17 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
 
     int *in1, *in2;
 
+    // copy row 0 to the circular buffer
+    copyRowToCircularBuffer(0, w, in, buf);
+    copyRowToCircularBuffer(1, w, in, buf);
+    for (i=0; i<256; i++) {
+        cout << "i: " <<(int) in[256+i] << "buf: " << (int) buf[256+i] << endl;
+    }
 
-    copyRowToCircularBuffer(0, 0, in, buf);
-    cout << buf[0] << endl;
+
     /*for (int y=0; y<h; y++) {
         for (int x=0; x<w; x++) {
-
-
             *out = (*in1 < threshold) ? 255 : 0;
-            
             int e = *in1 - *out;
 
             in1[1] += (e*7/16.0);
@@ -111,18 +113,28 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
 }
 
 void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *buf) {
-    // copy the row to circlar buffer
+    // copy the row to circlar buffer, yes i should be using custom data structure :/
     
-    int row = (y * width);
-    short *buffer = buf;
-    unsigned char *in = inArray;
-
-    cout << (int) in[200] << endl;
     
-    buffer[0] = 5;
-
-    cout << buffer << endl;
-    cout << buffer[0] << endl;
+    int row = (y * width); // keep track of the row we are in for inArray
+    short *buffer = buf; // size is width * 2
+    unsigned char *in = inArray; // this is pointer to input array
+    
+    
+    for (int i=0; i<width; i++) {
+        if ((y % 2) == 0) {
+            // copy to first portion of buffer
+            int head = i;
+            buffer[head] = in[row + i];
+            } else {
+            // copy to the second portion of buffer
+            int head = i + width;
+            buffer[head] = in[row + i];
+            }
+    }
+    //cout << (int) in[200] << endl;
+    //cout << buffer << endl;
+    //cout << buffer[0] << endl;
     
 
 
