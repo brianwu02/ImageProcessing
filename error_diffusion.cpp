@@ -9,7 +9,7 @@
 using namespace std;
 
 void error_diffusion(imageP, int, int, float, imageP);
-void copyRowToCircularBuffer(int, int, unsigned char *inArray, short *buf);
+//void copyRowToCircularBuffer(int, int, unsigned char *inArray, short *buf);
 
 int main(int argc, char** argv) {
     int mtd, serpentine;
@@ -80,18 +80,16 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
 
     int h = I1->height;
     int w = I1->width;
-    short buf[(w*2) + 4]; // add 4 to pad with zeros
+    //short buf[(w*2) + 4]; // add 4 to pad with zeros
     short *in1, *in2;
+    short buf[2][w+2];
     
     // copy row 0 to the circular buffer
-    copyRowToCircularBuffer(0, w, in, buf);
+    //copyRowToCircularBuffer(0, w, in, buf);
+    //copyRowToCircularBuffer(y+1, w, in, buf);
     
     for (int y=0; y<h; y++) {
-        copyRowToCircularBuffer(y+1, w, in, buf);
-
-        in1 = &buf[0] + 1;
-        in2 = &buf[w] + 1;
-
+        
         for (int x=0; x<w; x++) {
             *out = (*in1 < threshold) ? 0 : 255;
             short e = *in1 - *out;
@@ -107,17 +105,12 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
             //in2[0] += (e*5/16.0);
             //in2[1] += (e*1/16.0);
             
-            // advance circular buffer pointers
-            in1++;
-            in2++;
-            // advance output buffer;
-            out++;
 
 
         }
     }
 }
-
+/*
 void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *buf) {
     // copy the row to circlar buffer, yes i should be using custom data structure :/
     
@@ -146,9 +139,5 @@ void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *bu
     //cout << (int) in[200] << endl;
     //cout << buffer << endl;
     //cout << buffer[0] << endl;
-    
-
-
-
 }
-
+*/
