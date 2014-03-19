@@ -11,10 +11,14 @@ ordered dither
 usage: __error_diffusion__ *infile* *mtd* *serpentine* *gamma* *outfile*
 
 __*mtd*__: 0; Use Floyd Steinberg Error Diffusion Algorithm.
+
 __*mtd*__: 1; Use Jarvis-Judice-Ninke Error Diffusion Algorithm.
+
 __*gamma*__: use 1.0 for no gamma correction.
+
 __*serpentine*__: 1; Use serpentine scanning method, where even rows are processed left to right while 
 odd rows are processed right to left.
+
 __*serpentine*__: 0; scan left to right.
 
 1. Gamma correct the input image.
