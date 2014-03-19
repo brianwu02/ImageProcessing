@@ -80,58 +80,126 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
 
     int h = I1->height;
     int w = I1->width;
-    //short buf[(w*2) + 4]; // add 4 to pad with zeros
-    //short *in1, *in2;
-    short buf[1][w+2];
 
-    // pad the buffer
-    buf[0][0] = 0;
-    buf[0][(w+2) -1] = 0;
-    buf[1][0] = 0;
-    buf[1][(w+2) -1] = 0;
+    // mtd=0; manually copy row 0 to the circular buffer. Floyd-Steinberg Algorithm
+    if (mtd == 0) {
+        short buf[1][w+2];
 
-    int buffer_length = w + 2;
+        // pad the buffer
+        buf[0][0] = 0;
+        buf[0][(w+2) -1] = 0;
+        buf[1][0] = 0;
+        buf[1][(w+2) -1] = 0;
 
-    // manually copy row 0 to the circular buffer
-    for (int i = 0; i < w; i++) {
-        buf[0][i+1] = in[i];
-    }
-    
-    
-    for (int y=0; y<h; y++) {
-        // manually copy row 1 in to the circular buffer.
-        if ((y % 2) == 0) {
-            // if y is even, copy to buf[1]
-            for (int i = 0; i < w; i++) {
-                buf[1][i+1] = in[y*w+i];
-            }
-
-        } else {
-            // if y is odd, copy to buf[0]
-            for (int i = 0; i < w; i++) {
-                buf[0][i+1] = in[y*w+i];
-            }
+        for (int i = 0; i < w; i++) {
+            buf[0][i+1] = in[i];
         }
         
-        int p = 1;
-        for (int x=0; x<w; x++) {
-            //*out = (buf[0][p] < threshold) ? 0 : 255;
-            *out = (buf[0][p] < threshold) ? 0 : 255;
-            //*out = (*in1 < threshold) ? 0 : 255;
-            short e = (buf[0][p] - *out);
-            //cout << (int) e << endl;
-
-            buf[0][p+1] += (e*7/16.0); // error to E 
-            buf[1][p-1] += (e*3/16.0); // error to SW
-            buf[1][p] += (e*5/16.0);   // error to S
-            buf[1][p+1] += (e*1/16.0); // error to SE
+        for (int y=0; y<h; y++) {
+            // manually copy row 1 in to the circular buffer.
+            if ((y % 2) == 0) {
+                // if y is even, copy to buf[1]
+                for (int i = 0; i < w; i++) {
+                    buf[1][i+1] = in[y*w+i];
+                }
+            } else {
+                // if y is odd, copy to buf[0]
+                for (int i = 0; i < w; i++) {
+                    buf[0][i+1] = in[y*w+i];
+                }
+            }
             
-            p++;
-            out++;
+            int p = 1;
+            for (int x=0; x<w; x++) {
+                //*out = (buf[0][p] < threshold) ? 0 : 255;
+                *out = (buf[0][p] < threshold) ? 0 : 255;
+                //*out = (*in1 < threshold) ? 0 : 255;
+                //cout << (int) buf[0][p] << endl;
+                short e = (buf[0][p] - *out);
+                //cout << (int) e << endl;
 
+                buf[0][p+1] += (e*7/16.0); // error to E 
+                buf[1][p-1] += (e*3/16.0); // error to SW
+                buf[1][p] += (e*5/16.0);   // error to S
+                buf[1][p+1] += (e*1/16.0); // error to SE
+                
+                p++;
+                out++;
+            }
+        }
+    } else {
+        short buf[2][w+4];
+
+        // pad the buffer, 2 deep.
+        buf[0][0] = 0;
+        buf[0][1] = 0;
+        buf[0][(w+4) -1] = 0;
+        buf[0][(w+4) -2] = 0;
+
+        buf[1][0] = 0;
+        buf[1][1] = 0;
+        buf[1][(w+4) -1] = 0;
+        buf[1][(w+4) -2] = 0;
+
+        buf[2][0] = 0;
+        buf[2][1] = 0;
+        buf[2][(w+4) -1] = 0;
+        buf[2][(w+4) -2] = 0;
+
+        // mtd=1; for Jarvis-Judice-Ninke Error diffusion algorithm, need buffers.
+        for (int i = 0; i < w; i++) {
+            buf[0][i+2] = in[i];
+            buf[1][i+2] = in[i+w];
+        }
+        // circular buffer logic.
+        for (int y=0; y<h; y++) {
+            if ((y % 3) == 0) {
+                for (int i = 0; i < w; i++) {
+                    buf[2][i+2] = in[y*w+i];
+                }
+            }
+            if ((y % 3) == 1) {
+                for (int i = 0; i < w; i++) {
+                   buf[0][i+2] = in[y*w+i];
+                   cout << buf[0][i+2] << endl;
+                }
+            }
+            if ((y % 3) == 2) {
+                for (int i = 0; i < w; i++) {
+                    buf[1][i+2] = in[y*w+i];
+                }
+            }
+            int p = 2;
+            for (int x=0; x<w; x++) {
+                *out = (buf[0][p] < threshold) ? 0 : 255;
+                //cout << (int) buf[0][p] << endl;
+                short e = (buf[0][p] - *out);
+                cout << (int) e << endl;
+
+                buf[0][p+1] += (e*7/48.0);
+                buf[0][p+2] += (e*5/48.0);
+                buf[1][p-2] += (e*3/48.0);
+                buf[1][p-1] += (e*5/48.0);
+                buf[1][p] += (e*7/48.0);
+                buf[1][p+1] += (e*5/48.0);
+                buf[1][p+2] += (e*3/48.0);
+
+                buf[2][p-2] += (e*1/48.0);
+                buf[2][p-1] += (e*3/48.0);
+                buf[2][p] += (e*5/48.0);
+                buf[2][p+1] += (e*3/48.0);
+                buf[2][p+2] += (e*1/48.0);
+
+                p++;
+                out++;
+            }
         }
     }
 }
+
+
+
+
 
 /*
 void copyRowToCircularBuffer(int y, int width, unsigned char *inArray, short *buf) {
