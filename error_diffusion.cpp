@@ -74,7 +74,7 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     }
 
     // create thresholding scale
-    threshold = 256 / 2;
+    threshold = 255 / 2;
     
     // create circular buffer. this one here is only 2 'widths' long.
 
@@ -110,6 +110,12 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
             }
             
             int p = 1;
+            if (serpentine == 1) {
+                if ((y % 2) == 1) {
+                    p = w;
+                }
+            }
+
             for (int x=0; x<w; x++) {
                 //*out = (buf[0][p] < threshold) ? 0 : 255;
                 *out = (buf[0][p] < threshold) ? 0 : 255;
@@ -117,13 +123,27 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
                 //cout << (int) buf[0][p] << endl;
                 short e = (buf[0][p] - *out);
                 //cout << (int) e << endl;
-
-                buf[0][p+1] += (e*7/16.0); // error to E 
+                
+                if (serpentine == 1) {
+                    if ((y % 2) == 1) {
+                        buf[0][p-1] += (e*7/16.0);
+                    }
+                } else {
+                    buf[0][p+1] += (e*7/16.0); // error to E 
+                }
                 buf[1][p-1] += (e*3/16.0); // error to SW
                 buf[1][p] += (e*5/16.0);   // error to S
                 buf[1][p+1] += (e*1/16.0); // error to SE
                 
-                p++;
+                if (serpentine == 1) {
+                    if ((y % 2) == 1) {
+                        p--;
+                    } else {
+                        p++;
+                    }
+                } else {
+                    p++;
+                }
                 out++;
             }
         }
@@ -174,7 +194,6 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
                 *out = (buf[0][p] < threshold) ? 0 : 255;
                 //cout << (int) buf[0][p] << endl;
                 short e = (buf[0][p] - *out);
-                cout << (int) e << endl;
 
                 buf[0][p+1] += (e*7/48.0);
                 buf[0][p+2] += (e*5/48.0);
