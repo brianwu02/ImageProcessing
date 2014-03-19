@@ -8,22 +8,31 @@ ordered dither
 
 ####error_diffusion.cpp
 
-usage: error_diffusion *infile* *mtd* *serpentine* *gamma* *outfile*
+usage: __error_diffusion__ *infile* *mtd* *serpentine* *gamma* *outfile*
 
-mtd = 0; Use Floyd Steinberg Error Diffusion Algorithm, 
+*mtd*: 0; Use Floyd Steinberg Error Diffusion Algorithm.
 
-mtd = 1; Use Jarvis-Judice-Ninke Error Diffusion Algorithm.
+*mtd*: 1; Use Jarvis-Judice-Ninke Error Diffusion Algorithm.
 
-serpentine = 1; Use serpentine scanning method, where even rows are processed left to right while 
+*gamma*: use 1.0 for no gamma correction.
+
+*serpentine*: 1; Use serpentine scanning method, where even rows are processed left to right while 
 odd rows are processed right to left.
 
-serpentine = 0; scan left to right.
+*serpentine*: 0; scan left to right.
 
 1. Gamma correct the input image.
 
 2. 
 
 ####halftone.cpp
+
+usage: __halftone__ *infile* *m* *gamma* *outfile*
+
+*m*: select *m* * *m* cluster matrix where *m* <= 10
+
+*gamma*: use 1.0 for no gamma correction.
+
 
 1. Gamma correct the input image.
 
