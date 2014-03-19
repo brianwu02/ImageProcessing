@@ -3,8 +3,25 @@
 
 Files not included in repo: IP.h, IPutil.cpp, makefile.
 
-unordered_dither *infile* *gammaRatio* *n* *outfile* where n is quantization levels.
 ordered dither
+
+
+####error_diffusion.cpp
+
+usage: error_diffusion *infile* *mtd* *serpentine* *gamma* *outfile*
+
+mtd = 0; Use Floyd Steinberg Error Diffusion Algorithm, 
+
+mtd = 1; Use Jarvis-Judice-Ninke Error Diffusion Algorithm.
+
+serpentine = 1; Use serpentine scanning method, where even rows are processed left to right while 
+odd rows are processed right to left.
+
+serpentine = 0; scan left to right.
+
+1. Gamma correct the input image.
+
+2. 
 
 ####halftone.cpp
 
@@ -40,6 +57,8 @@ for (int y=0; y<h; y++){
 by an m * m cluster dot matrix.
 
 #### ordered_dithering.cpp
+
+usage: unordered_dither *infile* *gamma* *n* *outfile* where n is quantization levels.
 
 #### unordered_dithering.cpp
 
