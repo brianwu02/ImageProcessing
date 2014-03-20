@@ -85,6 +85,9 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     if (mtd == 0) {
         short buf[1][w+2];
 
+        //short bufer[10];
+        //short *buf1 = bufer;
+
         // pad the buffer
         buf[0][0] = 0;
         buf[0][(w+2) -1] = 0;
@@ -110,40 +113,17 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
             }
             
             int p = 1;
-            if (serpentine == 1) {
-                if ((y % 2) == 1) {
-                    p = w;
-                }
-            }
 
             for (int x=0; x<w; x++) {
-                //*out = (buf[0][p] < threshold) ? 0 : 255;
+
                 *out = (buf[0][p] < threshold) ? 0 : 255;
-                //*out = (*in1 < threshold) ? 0 : 255;
-                //cout << (int) buf[0][p] << endl;
                 short e = (buf[0][p] - *out);
-                //cout << (int) e << endl;
                 
-                if (serpentine == 1) {
-                    if ((y % 2) == 1) {
-                        buf[0][p-1] += (e*7/16.0);
-                    }
-                } else {
-                    buf[0][p+1] += (e*7/16.0); // error to E 
-                }
+                buf[0][p+1] += (e*7/16.0);
                 buf[1][p-1] += (e*3/16.0); // error to SW
                 buf[1][p] += (e*5/16.0);   // error to S
                 buf[1][p+1] += (e*1/16.0); // error to SE
-                
-                if (serpentine == 1) {
-                    if ((y % 2) == 1) {
-                        p--;
-                    } else {
-                        p++;
-                    }
-                } else {
-                    p++;
-                }
+                p++;
                 out++;
             }
         }
@@ -189,6 +169,7 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
                     buf[1][i+2] = in[y*w+i];
                 }
             }
+
             int p = 2;
             for (int x=0; x<w; x++) {
                 *out = (buf[0][p] < threshold) ? 0 : 255;
