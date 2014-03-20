@@ -3,11 +3,32 @@
 
 Files not included in repo: IP.h, IPutil.cpp, makefile.
 
-ordered dither
+
+####blur.cpp
+
+usage: __blur__ *in* *xsz* *ysz* *out*
+
+__in__: infile.
+
+__xsz__: number of columns used in box filter
+
+__ysz__: number of rows used in box filter.
+
+__out__: outfile.
+
+Reads an input image in and blurs it with a box filter, kernel using unweighted averaging.
+Kernel filter has dimensions xsz * ysz where xsz is are rows and ysz are columns. xsz and
+ysz must be odd.
+
+1. blur the rows, store in temporary buffer.
+
+2. then pass do a pass on the temporary buffer and blur the columns.
+
+3. store the result in output image.
+
 
 
 ####error_diffusion.cpp
-
 
 usage: __error_diffusion__ *infile* *mtd* *serpentine* *gamma* *outfile*
 
