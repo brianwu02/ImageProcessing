@@ -8,6 +8,7 @@ ordered dither
 
 ####error_diffusion.cpp
 
+
 usage: __error_diffusion__ *infile* *mtd* *serpentine* *gamma* *outfile*
 
 __*mtd*__: 0; Use Floyd Steinberg Error Diffusion Algorithm.
@@ -23,7 +24,11 @@ __*serpentine*__: 0; scan left to right.
 
 1. Gamma correct the input image.
 
-2. 
+2. Create circuluar buffer. Pad the circular buffer with 0's simulating a 'border' for the pixels. 
+Padding is necessary for error distribution to function properly when the output kernel is on an edge pixel
+without padding, error would be distributed to a location not allocated in memory. 
+
+3. Apply error correctly according to algorithm selected. 
 
 ####halftone.cpp
 
