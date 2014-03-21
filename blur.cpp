@@ -72,18 +72,41 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     int s = (xsz - 1) / 2;
     int t = (ysz - 1) / 2;
 
-    short buf[w+s];
+    // fixed example for 5x5 kernel so 2 pad on left and right
+    short bufx[w+4];
+    short bufy[w+4];
+
+    bufx[0] = 0;
+    bufx[1] = 0;
+    bufx[(w+3)] = 0;
+    bufx[(w+2)] = 0;
+ 
+    bufy[0] = 0;
+    bufy[1] = 0;
+    bufy[(w+3)] = 0;
+    bufy[(w+2)] = 0;
 
     cout << s << " " << t << endl;
 
+    // evaluate by ror
+    for (int y=0; y<h; y++) {
+        // copy to buffer here since this represents the row
+        for (int x=0; x<w; i++) {
+            bufx[x+2] = in[y*w+x];
+        }
 
-    for (int i=0; i<w; i++) {
         for (int x=2; x<w-2; x++) {
+            // for each row in the buffer, average the image and store in tmp_out.
+
+
+
             out[x] = (in[x-2] + in[x-1] + in[x] + in[x+1] + in[x+2]) / 5;
             sum += (in[x+3] - in[x-2]);
         }
     }
 
+
+    // evaluate by column
     for (int j=0; i<h; j++) {
         for (int y=2; y<h-2; y++) {
             // do stuff here
