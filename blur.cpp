@@ -75,24 +75,37 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     int t = (ysz - 1) / 2;
 
     // fixed example for 5x5 kernel so 2 pad on left and right
-    short bufx[w+4];
-    short bufy[w+4];
 
-    bufx[0] = 0;
-    bufx[1] = 0;
-    bufx[(w+3)] = 0;
-    bufx[(w+2)] = 0;
- 
-    bufy[0] = 0;
-    bufy[1] = 0;
-    bufy[(w+3)] = 0;
-    bufy[(w+2)] = 0;
+    int bufx_size = (w + s*2);
+    int bufy_size = (w + t*2);
+    
+    short bufx[(w + s*2)]; // s*2 is padding required.
+    short bufy[(w + t*2)]; // t*2 padding required.
+    
+
+    // dynamically pad buffer x
+    for (int i=0; i<(s*2); i++) {
+        if (i < s) {
+            bufx[i] = 0;
+        } else {
+            bufx[w+i] = 0;
+        }
+    }
+
+    // dynamically pad buffer y
+    for (int i=0; i<(t*2); i++) {
+        if (i < t) {
+            bufy[i] = 0;
+        } else {
+            bufy[h+i] = 0;
+        }
+    }
+
 
     cout << s << " " << t << endl;
 
     // evaluate by ror
     for (int y=0; y<h; y++) {
-        cout << "copying to buffer" << endl;
         // copy to buffer here since this represents the row
         for (int x=0; x<w; x++) {
             bufx[x+2] = in[y*w+x];
