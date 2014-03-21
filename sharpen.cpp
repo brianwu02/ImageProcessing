@@ -8,7 +8,8 @@
 using namespace std;
 
 void blur(imageP, imageP, int, int, imageP);
-void sharpen(imageP, int, imageP);
+void sharpen(imageP, imageP, int, imageP);
+int clip(int);
 
 int main(int argc, char** argv) {
 
@@ -22,34 +23,73 @@ int main(int argc, char** argv) {
 
 
     I1 = IP_readImage(argv[1]);
+    sz = atoi(argv[2]);
+    fctr = atoi(argv[3]);
 
     I2 = NEWIMAGE;
     tmp_img = NEWIMAGE;
     final_img = NEWIMAGE;
 
     if ((sz & 1) == 0) {
-        cout << "sz: " << sz << "is not odd" << endl;
+        cerr << "sz: " << sz << "is not odd" << endl;
         exit(1);
     }
 
-    sz = atoi(argv[2]);
-    fctr = atoi(argv[3]);
 
     blur(I1, tmp_img, sz, sz, I2);
 
     IP_freeImage(tmp_img);
-    IP_freeImage(I1);
 
-    sharpen(I2, fctr, final_img);
+    sharpen(I1, I2, fctr, final_img);
+
+    IP_freeImage(I1);
     IP_freeImage(I2);
 
-
     IP_saveImage(final_img, argv[4]);
+    IP_freeImage(final_img);
+
+    cout << "done!" << endl;
     
     return 1;
 }
 
-void sharpen(imageP I2, int fctr, imageP final_img) {
+void sharpen(imageP I1, imageP I2, int fctr, imageP final_img) {
+    /* I2 will be blurred image.
+     * I1 will be the un-altered input image.
+     * final will be final output image.
+     */
+
+    int i, total;
+    unsigned char *original, *blurred, *fin_img;
+
+    total = I1->width * I1->height;
+    
+    final_img->width = I1->width;
+    final_img->height = I1->height;
+
+    final_img->image = (unsigned char *) malloc(total);
+
+    fin_img = final_img->image;
+    original = I1->image;
+    blurred = I2->image;
+
+    if (final_img->image == NULL) {
+        cerr << "not enough memory\n" << endl;
+    }
+
+    int w = I1->width;
+    int h = I1->height;
+
+    unsigned char difference[total];
+    
+    // subtract blurred image from original image to get difference.
+    for (i=0; i<total; i++) {
+        difference[i] = clip(original[i] - blurred[i]);
+    }
+
+    for (i=0; i<total; i++) {
+        fin_img[i] = clip(original[i] + (fctr * difference[i]));
+    }
 
 }
 
@@ -136,4 +176,14 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
         }
     }
 
+}
+
+int clip(int a) {
+    if (a >= 255) {
+        return 255;
+    } else if (a <= 0) {
+        return 0;
+    } else {
+        return a;
+    }
 }
