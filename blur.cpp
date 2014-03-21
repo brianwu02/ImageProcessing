@@ -1,6 +1,6 @@
 /**
  * Image Processing
- * Brian Error
+ * Brian Wu
  * Blur
  * Usage: blur in xsz ysz out
  */
