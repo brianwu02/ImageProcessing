@@ -56,6 +56,7 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     I2->height = I2->height;
 
     I2->image = (unsigned char *) malloc(total);
+    tmp_img->image = (unsigned char *) malloc(total);
 
     out = I2->image;
     in = I1->image;
@@ -95,12 +96,11 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
             bufx[x+2] = in[y*w+x];
         }
 
+        sum = bufx[0] + bufx[1] + bufx[2] + bufx[3] + bufx[4];
         for (int x=2; x<w-2; x++) {
             // for each row in the buffer, average the image and store in tmp_out.
 
-
-
-            out[x] = (in[x-2] + in[x-1] + in[x] + in[x+1] + in[x+2]) / 5;
+            tmp[y*w+x] = sum / 5;
             sum += (in[x+3] - in[x-2]);
         }
     }
