@@ -107,8 +107,17 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     // evaluate by row
     for (int y=0; y<h; y++) {
         // copy to buffer here since this represents the row
-        for (int x=0; x<w; x++) {
-            bufx[x+s] = in[y*w+x];
+        for (int x=0; x<(bufx_size); x++) {
+            // pad the buffer with neighboring pixels instead of 0;
+            if (x < s) {
+                // if x is a pad pixel to the left portion of the buffer.
+                bufx[x] = in[y*w+(x+s)];
+            } else if (x > w) {
+                // if x is a pad pixel to the right portion of buffer.
+                bufx[x] = in[y*w+(x-s)];
+            } else {
+                bufx[x] = in[y*w+x];
+            }
         }
 
         // dynamically calcuate sum for rows.
@@ -122,7 +131,6 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
             sum += (bufx[x+(s*2+1)] - bufx[x]);
         }
     }
-
 
     // evaluate by column
     for (int x=0; x<w; x++) {
