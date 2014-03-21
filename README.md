@@ -4,6 +4,21 @@
 Files not included in repo: IP.h, IPutil.cpp, makefile.
 
 
+####sharpen.cpp
+
+Sharpen an image by subtracting a blurred version from it's original value and the scaled
+difference back to input image.
+
+usage: __sharpen__ *in* *sz* *fctr* *out*
+
+__in__: input image. PGM file.
+
+__sz__: [Int]. filter of dimension sz * sz.
+
+__fctr__: Integer.
+
+
+
 ####blur.cpp
 
 usage: __blur__ *in* *xsz* *ysz* *out*
