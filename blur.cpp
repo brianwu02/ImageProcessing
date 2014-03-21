@@ -82,26 +82,6 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     short bufx[(w + s*2)]; // s*2 is padding required.
     short bufy[(h + t*2)]; // t*2 padding required.
     
-    // dynamically pad buffer x
-    /*
-    for (int i=0; i<(s*2); i++) {
-        if (i < s) {
-            bufx[i] = 0;
-        } else {
-            bufx[w+i] = 0;
-        }
-    }*/
-
-    // dynamically pad buffer y
-    /*
-    for (int i=0; i<(t*2); i++) {
-        if (i < t) {
-            bufy[i] = 0;
-        } else {
-            bufy[h+i] = 0;
-        }
-    }*/
-
     cout << "s: " << s << endl;
     cout << "t: " << t << endl;
     cout << "w: " << w << endl;
@@ -142,11 +122,10 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
         for (int y=0; y<bufy_size; y++) {
             //cout << y << endl;
             if (y < t) {
+                //cout << "y<t " << y << endl;
                 bufy[y] = tmp[(y+t)*w+x];
             } else if (y >= h) {
-                //cout << y << endl;
-                cout << y-t << endl;
-                bufy[y] = tmp[(y-t) * w+x];
+                bufy[y] = tmp[(y-(t*2)) * w+x];
             } else {
                 //cout << "in else : " << y << endl;
                 bufy[y] = tmp[y*w+x];
