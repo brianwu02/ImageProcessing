@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
 
     IP_freeImage(I1);
     IP_freeImage(I2);
+    IP_freeImage(tmp_img);
 
     cout << "done" << endl;
     return 1;
