@@ -101,22 +101,27 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
         }
     }
 
-
     cout << s << " " << t << endl;
 
-    // evaluate by ror
+    // evaluate by row
     for (int y=0; y<h; y++) {
         // copy to buffer here since this represents the row
         for (int x=0; x<w; x++) {
-            bufx[x+2] = in[y*w+x];
+            bufx[x+s] = in[y*w+x];
         }
 
-        sum = bufx[0] + bufx[1] + bufx[2] + bufx[3] + bufx[4];
-        for (int x=2; x<w-2; x++) {
+        // dynamically calcuate sum for rows.
+        int sum = 0;
+        for (int i=0; i<(s*2 + 1); i++) {
+            sum += bufx[i];
+        }
+        for (int x=0; x<w; x++) {
             // for each row in the buffer, average the image and store in tmp_out.
             //
-            tmp[y*w+x] = sum / 5;
-            sum += (bufx[x+3] - bufx[x-2]);
+            tmp[y*w+x] = sum / (s*2+1);
+            sum += (bufx[x+(s*2+1)] - bufx[x]);
+            //sum += (bufx[x+s+1] - bufx[x-s]);
+            //sum += (bufx[x+3] - bufx[x-2]);
         }
     }
 
@@ -128,11 +133,17 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
             bufy[y+2] = tmp[y*w+x];
         }
 
-        sum = bufy[0] + bufy[1] + bufy[2] + bufy[3] + bufy[4];
-        for (int y=2; y<h-2; y++) {
+        // dynamically calculate sum for columns.
+        int sum = 0;
+        for (int i=0; i<(t*2 + 1); i++) {
+            sum += bufy[i];
+        }
+
+        for (int y=0; y<h; y++) {
             // for each column in buffer, average the image and store in out 
-            out[y*w+x] = sum / 5;
-            sum += (bufy[y+3] - bufy[y-2]);
+            out[y*w+x] = sum / (t*2+1);
+            sum += (bufy[y+(t*2+1)] - bufy[y]);
+            //sum += (bufy[y+3] - bufy[y-2]);
         }
     }
 
