@@ -77,43 +77,47 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     // fixed example for 5x5 kernel so 2 pad on left and right
 
     int bufx_size = (w + s*2);
-    int bufy_size = (w + t*2);
+    int bufy_size = (h + t*2);
     
     short bufx[(w + s*2)]; // s*2 is padding required.
-    short bufy[(w + t*2)]; // t*2 padding required.
+    short bufy[(h + t*2)]; // t*2 padding required.
     
-
     // dynamically pad buffer x
+    /*
     for (int i=0; i<(s*2); i++) {
         if (i < s) {
             bufx[i] = 0;
         } else {
             bufx[w+i] = 0;
         }
-    }
+    }*/
 
     // dynamically pad buffer y
+    /*
     for (int i=0; i<(t*2); i++) {
         if (i < t) {
             bufy[i] = 0;
         } else {
             bufy[h+i] = 0;
         }
-    }
+    }*/
 
     cout << "s: " << s << endl;
     cout << "t: " << t << endl;
+    cout << "w: " << w << endl;
+    cout << "h: " << h << endl;
 
     // evaluate by row
     for (int y=0; y<h; y++) {
-        // copy to buffer here since this represents the row
-        for (int x=0; x<(bufx_size); x++) {
-            // pad the buffer with neighboring pixels instead of 0;
+        // copy to row to buffer for X.
+        for (int x=0; x<bufx_size; x++) {
+            // pad the buffer with neighboring pixels.
             if (x < s) {
                 // if x is a pad pixel to the left portion of the buffer.
                 bufx[x] = in[y*w+(x+s)];
-            } else if (x > w) {
+            } else if (x >= w) {
                 // if x is a pad pixel to the right portion of buffer.
+                //cout << x << endl;
                 bufx[x] = in[y*w+(x-s)];
             } else {
                 bufx[x] = in[y*w+x];
@@ -134,9 +138,19 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
 
     // evaluate by column
     for (int x=0; x<w; x++) {
-        //copy column to buffer.
-        for (int y=0; y<h; y++) {
-            bufy[y+t] = tmp[y*w+x];
+        //copy column to buffer Y.
+        for (int y=0; y<bufy_size; y++) {
+            //cout << y << endl;
+            if (y < t) {
+                bufy[y] = tmp[(y+t)*w+x];
+            } else if (y >= h) {
+                //cout << y << endl;
+                cout << y-t << endl;
+                bufy[y] = tmp[(y-t) * w+x];
+            } else {
+                //cout << "in else : " << y << endl;
+                bufy[y] = tmp[y*w+x];
+            }
         }
 
         // dynamically calculate sum for columns.
