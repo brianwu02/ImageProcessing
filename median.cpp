@@ -78,18 +78,25 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     // assume input, sz = 3 so.. 3*3 kernel size. this means 
     // we should be padding the input image with 2 columns and 2 rows.
     
-    // vertical indices
-    int leftImageIndex = n;
-    int rightImageIndex = w + n;
+    // vertical indices that represent padding columns
+    int leftIdx = n;
+    int rightIdx = w + n;
 
-    // horizontal indices
-    int topImageIndex = m;
-    int bottomImageIndex = h + m;
-
+    // horizontal indices that represent padding rows
+    int topIdx = m;
+    int botIdx = h + m;
 
     for (int y=0; y < paddedHeight; y++) {
         for (int x=0; x < paddedWidth; x++) {
+            if (y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx) {
+                // x, y index is within original image coordinate
+                //
+            } else if (y < leftIdx) {
+                // y index is to the left of original image
             
+            } else if ( y > leftIdx) {
+                // y index is to the right of the original image
+            }
 
 
         }
