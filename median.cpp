@@ -75,9 +75,24 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
     int h = I1->height;
 
     // create buffer to that will represent the kernel buffer
-    short buf[0];
+    // for simplicity sake, we will assume sz = 3;
+    int pad_size = (sz * 2);
+    int buf_size = (w + pad_size);
+    short buf[buf_size];
     
+
     for (int y=0; y<h; y++) {
+        // copy the current row in to the buffer
+        for (int x=0; x<buf_size; x++) {
+            if (x <= sz) {
+                // x is a pad index on the left so we must pad using pixel replication.
+            } else if (x >= w) {
+                // x is a pad index on the right.
+            } else {
+                // x is not a pad pixel.
+            }
+        }
+
         for (int x=0; x<w; x++) {
 
 
