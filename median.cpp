@@ -85,8 +85,8 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
     int buf_size = (w + pad_size);
     short buf[buf_size];
 
-    int kernel_size = (sz * 2) + 1;
-    
+    int kernel_size = (sz * 2);
+    short kernelBuffer[kernel_size];
 
     for (int y=0; y<h; y++) {
         // copy the current row in to the buffer
@@ -106,12 +106,16 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
-        // do some some calculation here.
+        // initialize the kernel buffer, assume 3 by 3
+        int sum = 0;
         for (i=0; i<kernel_size; i++) {
+            kernelBuffer[i] = buf[i];
         }
 
         int medianIndex = sz;
         for (int x=0; x<w; x++) {
+            // extract & sort the kernel.
+            
 
 
 
