@@ -91,10 +91,16 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
         for (int x=0; x<buf_size; x++) {
             if (x <= sz) {
                 // x is a pad index on the left so we must pad using pixel replication.
+                // take the left most pixel of that row.
+                buf[x] = in[y*w+0];
             } else if (x >= w) {
                 // x is a pad index on the right.
+                // take the right most pixel of that row.
+                buf[x] = in[y*w+(w-1)];
             } else {
                 // x is not a pad pixel.
+                // take the current pixel value.
+                buf[x] = in[y*w+x];
             }
         }
 
