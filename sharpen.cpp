@@ -125,8 +125,6 @@ void blur(imageP I1, imageP tmp_img, int xsz, int ysz, imageP I2) {
     int s = (xsz - 1) / 2;
     int t = (ysz - 1) / 2;
 
-    // fixed example for 5x5 kernel so 2 pad on left and right
-
     int bufx_size = (w + s*2);
     int bufy_size = (h + t*2);
     
