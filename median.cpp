@@ -41,9 +41,10 @@ int main(int argc, char** argv) {
     paddedImg = NEWIMAGE;
 
     padImage(I1, sz, paddedImg);
-    median(I1, sz, avg_nbrs, I2);
+    //median(I1, sz, avg_nbrs, I2);
 
-    IP_saveImage(I2, argv[4]);
+    IP_saveImage(paddedImg, argv[4]);
+    //IP_saveImage(I2, argv[4]);
     IP_freeImage(I1);
     IP_freeImage(I2);
     IP_freeImage(paddedImg);
@@ -95,6 +96,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     int paddedTotal = paddedImg->height * paddedImg->width;
     paddedImg->image = (unsigned char*) malloc(paddedTotal);
     paddedOut = paddedImg->image;
+    in = I1->image;
 
     int paddedHeight = paddedImg->height;
     int paddedWidth = paddedImg->width;
@@ -107,6 +109,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     int topIdx = m;
     int botIdx = h + m;
 
+
     for (int y=0; y < paddedHeight; y++) {
         for (int x=0; x < paddedWidth; x++) {
 
@@ -114,9 +117,13 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
             // dont need the branch predictor working so hard.
             if (x >= leftIdx and x < rightIdx and y >= topIdx and y < botIdx) {
                 // we are in region 4.
-                paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m) ];
+                //cout << "(" <<(int) y << "," << (int) x << ")" << endl;
+                //cout << "normalized y: " << (int) y << endl;
+                //cout << "normalized x: " << m << endl;
+                //paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m) ];
+                paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m)];
 
-            } else if (x < leftIdx and y < topIdx) {
+            } /*else if (x < leftIdx and y < topIdx) {
                 // we are in region 0.
                 // assign padded pixel as upper left original pixel value.
                 paddedOut[y*paddedWidth+x] = in[0]; 
@@ -156,20 +163,14 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
                 // assign padded pixel as bottom right original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w*h-1];
             
-            } else {
+            }*/ else {
                 // this should never happen since this will only occur if we have
                 // not handled a certain x,y coordinate.
-                cout << "unhandled condition, something bad" << endl;
-                cout << "x is: " << x << " y is: " << y << endl;
+                //cout << "unhandled condition, something bad" << endl;
+                //cout << "x is: " << x << " y is: " << y << endl;
             }
         }
     }
-
-
-
-    
-    
-    
 }
 
 void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
