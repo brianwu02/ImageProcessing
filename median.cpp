@@ -110,7 +110,14 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
         int medianIndex = kernel_size / 2; // check that this is actually the middle index
         int kernelSum = 0;
 
+        // optimizations that can be done:
+        // 1. pre-sort the array once before each inner loop. then for each consequent inner loop,
+        // remove the first element of the sorted index and add the next element. this way, we are
+        // not doing as many element copies and std::sort would take less time.
+        
         // pre-compute the average if needed.
+        if (avg_nbrs != 0) {
+        }
 
         for (int x=0; x<w; x++) {
             // copy values that are needed to the Kernel Buffer
