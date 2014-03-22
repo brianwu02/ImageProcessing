@@ -57,7 +57,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
      * to paddedImg using kernel size sz * sz.
      *   Pixel Replcation Example:
      *   
-     *   AA|ABCDEFGH|HH         
+     *   AA|ABCDEFGH|HH       
      *   AA|ABCDEFGH|HH        region0  |  region1  |  region2
      *   --------------        -------------------------------
      *   AA|ABCDEFGH|HH        region3  |           |  region5
@@ -67,8 +67,18 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
      *   gg|ghijklmn|nn        -------------------------------
      *   oo|opqrstuv|vv        region6  | region 7  | region 8
      *   --------------
+     *   oo|opqrstuv|vv       
      *   oo|opqrstuv|vv
-     *   oo|opqrstuv|vv
+     *   
+     *   region0 = y < leftIdx and x < topIdx
+     *   region1 = y >= leftIdx and y < rightIdx and x < topIdx
+     *   region2 = y >= rightIdx and x < topIdx
+     *   region3 = y < leftIdx and x >= topIdx and x < botIdx
+     *   region4 = y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx
+     *   region5 = y >= rightIdx and x >= topIdx and x < botIdx
+     *   region6 = y < leftIdx and x >= botIdx
+     *   region7 = y >= leftIdx and y < rightIdx and x >= botIdx
+     *   region8 = y >= rightIdx and x >= botIdx
      */
 
     int n = (sz - 1) / 2;
