@@ -62,6 +62,15 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     unsigned char *in, *paddedOut;
 
     int total = I1->width * I1->height;
+    int w = I1->width;
+    int h = I1->height;
+
+    paddedImg->width = (w + 2*m);
+    paddedImg->height = (h + 2*m);
+
+    int paddedTotal = paddedImg->height * paddedImg->width;
+    paddedImg->image = (unsigned char*) malloc(paddedTotal);
+    paddedOut = paddedImg->image;
     
     
     
