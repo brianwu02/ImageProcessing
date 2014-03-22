@@ -114,7 +114,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
             // dont need the branch predictor working so hard.
             if (y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx) {
                 // we are in region 4.
-                paddedOut[y*paddedWidth+x] = in[y*w+x];
+                paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m) ];
 
             } else if (y < leftIdx and x < topIdx) {
                 // we are in region 0.
