@@ -117,13 +117,9 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
             // dont need the branch predictor working so hard.
             if (x >= leftIdx and x < rightIdx and y >= topIdx and y < botIdx) {
                 // we are in region 4.
-                //cout << "(" <<(int) y << "," << (int) x << ")" << endl;
-                //cout << "normalized y: " << (int) y << endl;
-                //cout << "normalized x: " << m << endl;
-                //paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m) ];
                 paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m)];
 
-            } /*else if (x < leftIdx and y < topIdx) {
+            } else if (x < leftIdx and y < topIdx) {
                 // we are in region 0.
                 // assign padded pixel as upper left original pixel value.
                 paddedOut[y*paddedWidth+x] = in[0]; 
@@ -163,11 +159,11 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
                 // assign padded pixel as bottom right original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w*h-1];
             
-            }*/ else {
+            } else {
                 // this should never happen since this will only occur if we have
                 // not handled a certain x,y coordinate.
-                //cout << "unhandled condition, something bad" << endl;
-                //cout << "x is: " << x << " y is: " << y << endl;
+                cout << "unhandled condition, something bad" << endl;
+                cout << "x is: " << x << " y is: " << y << endl;
             }
         }
     }
