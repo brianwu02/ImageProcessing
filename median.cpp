@@ -106,12 +106,29 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
-        int medianIndex = sz;
+ 
+        int medianIndex = kernel_size / 2; // check that this is actually the middle index
+        int kernelSum = 0;
+
+        // pre-compute the average if needed.
+
         for (int x=0; x<w; x++) {
             // copy values that are needed to the Kernel Buffer
             for (int i=0; i<kernel_size; i++) {
                 kernelBuffer[i] = buf[i];
             }
+            // sort the kernel Buffer
+            std::sort(kernelBuffer, kernelBuffer + kernel_size);
+
+            if (avg_nbrs == 0) {
+                // if avg_nbrs is 0, then take the median value.
+                out[y*w+x] = kernelBuffer[medianIndex];
+            } else {
+                // else, take the average of the pixels above and below pixel.
+
+            }
+
+
 
             
 
