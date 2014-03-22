@@ -110,20 +110,24 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     for (int y=0; y < paddedHeight; y++) {
         for (int x=0; x < paddedWidth; x++) {
 
-            // put this condition first since it will occur most often.
+            // this condition comes first since it will occur most frequent.
             // dont need the branch predictor working so hard.
             if (y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx) {
                 // we are in region 4.
-                paddedOut[y*w+x] = in[y*w+x];
+                paddedOut[y*paddedWidth+x] = in[y*w+x];
 
             } else if (y < leftIdx and x < topIdx) {
                 // we are in region 0.
+                // assign padded pixel as upper left original pixel value.
+                paddedOut[y*paddedWidth+x] = in[0]; 
 
             } else if (y >= leftIdx and y < rightIdx and x < topIdx) {
                 // we are in region 1.
                 
             } else if (y >= rightIdx and x < topIdx) {
                 // we are in region 2.
+                // assign padded pixels as upper right original pixel value
+                paddedOut[y*paddedWidth+x] = in[w-1];
 
             } else if (y < leftIdx and x >= topIdx and x < botIdx) {
                 // we are in region 3.
@@ -133,12 +137,16 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
 
             } else if (y < leftIdx and x >= botIdx) {
                 // we are in region 6
+                // assign padded pixel as bottom left original pixel value.
+                paddedOut[y*paddedWidth+x] = in[w*h];
             
             } else if (y >= leftIdx and y < rightIdx and x >= botIdx) {
                 // we are in region 7
             
             } else if (y >= rightIdx and x >= botIdx) {
                 // we are in region 8
+                // assign padded pixel as bottom right original pixel value.
+                paddedOut[y*paddedWidth+x] = in[w*h-1];
             
             } else {
                 // this should never happen since this will only occur if we have
