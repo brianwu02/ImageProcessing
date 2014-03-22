@@ -72,8 +72,19 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     paddedImg->image = (unsigned char*) malloc(paddedTotal);
     paddedOut = paddedImg->image;
 
+    int paddedHeight = paddedImg->height;
+    int paddedWidth = paddedImg->width;
+
     // assume input, sz = 3 so.. 3*3 kernel size. this means 
     // we should be padding the input image with 2 columns and 2 rows.
+    
+    for (int y=0; y < paddedHeight; y++) {
+        for (int x=0; y < paddedWidth; x++) {
+
+
+        }
+    }
+
     
     
     
