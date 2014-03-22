@@ -56,29 +56,30 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
      * takes I1 as input image, I1 and applies pixel replication technique
      * to paddedImg using kernel size sz * sz.
      *   Pixel Replcation Example:
-     *                                leftIdx     rightIdx
-     *   AA|ABCDEFGH|HH                 
-     *   AA|ABCDEFGH|HH        region0  |  region1  |  region2
+     *                             leftIdx         rightIdx
+     *   AA|ABCDEFGH|HH                    x x x x
+     *   AA|ABCDEFGH|HH        region0  |  region1  |  region2   y
      *   --------------        -------------------------------  topIdx
-     *   AA|ABCDEFGH|HH        region3  |           |  region5
-     *   II|IJKLMNOP|PP        region3  |  region4  |  region5
-     *   QQ|QRSTUVWX|XX        region3  |  orig img |  region5 
-     *   YY|YZabcdef|ff        region3  |           |  region5 
+     *   AA|ABCDEFGH|HH        region3  |           |  region5   y
+     *   II|IJKLMNOP|PP        region3  |  region4  |  region5   y
+     *   QQ|QRSTUVWX|XX        region3  |  orig img |  region5   y
+     *   YY|YZabcdef|ff        region3  |           |  region5   y
      *   gg|ghijklmn|nn        -------------------------------  botIdx
-     *   oo|opqrstuv|vv        region6  | region 7  | region 8
+     *   oo|opqrstuv|vv        region6  | region 7  | region 8   y
      *   --------------
      *   oo|opqrstuv|vv       
      *   oo|opqrstuv|vv
      *   
-     *   region0 = y < leftIdx and x < topIdx
-     *   region1 = y >= leftIdx and y < rightIdx and x < topIdx
-     *   region2 = y >= rightIdx and x < topIdx
-     *   region3 = y < leftIdx and x >= topIdx and x < botIdx
-     *   region4 = y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx
-     *   region5 = y >= rightIdx and x >= topIdx and x < botIdx
-     *   region6 = y < leftIdx and x >= botIdx
-     *   region7 = y >= leftIdx and y < rightIdx and x >= botIdx
-     *   region8 = y >= rightIdx and x >= botIdx
+     *   region0 = x <  leftIdx  and y <  topIdx
+     *   region1 = x >= leftIdx  and x <  rightIdx and y <  topIdx 
+     *   region2 = x >= rightIdx and y <  topIdx
+     *   region3 = x <  leftIdx  and y >= topIdx   and y <  botIdx
+     *   region4 = x >= leftIdx  and x <  rightIdx and y >= topIdx and y < botIdx
+     *   region5 = x >= rightIdx and y >= topIdx   and y <  botIdx
+     *   region6 = x <  leftIdx  and y >= botIdx
+     *   region7 = x >= leftIdx  and x <  rightIdx and y >= botIdx
+     *   region8 = x >= rightIdx and y >= botIdx
+     *
      */
 
     int n = (sz - 1) / 2;
