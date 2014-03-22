@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     paddedImg = NEWIMAGE;
 
     padImage(I1, sz, paddedImg);
-    //median(I1, sz, avg_nbrs, I2);
+    median(paddedImg, sz, avg_nbrs, I2);
 
     IP_saveImage(paddedImg, argv[4]);
     //IP_saveImage(I2, argv[4]);
