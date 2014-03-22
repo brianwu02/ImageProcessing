@@ -30,9 +30,16 @@ int main(int argc, char** argv) {
     cout << "avg_nbrs: " << argv[3] << endl;
     cout << "out     : " << argv[4] << endl;
     
-    I1 = IP_readImage(argv[1]);
     sz = atoi(argv[2]);
     avg_nbrs = atoi(argv[3]);
+    
+    if ((sz & 1) == 0) {
+        cerr << "sz is must be an odd number." << endl;
+        exit(1);
+    }
+    
+
+    I1 = IP_readImage(argv[1]);
 
     I2 = NEWIMAGE;
 
@@ -67,6 +74,9 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
 
     int w = I1->width;
     int h = I1->height;
+
+
+
 
 
 
