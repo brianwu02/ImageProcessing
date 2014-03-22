@@ -147,7 +147,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
             } else if (x < leftIdx and y >= botIdx) {
                 // we are in region 6
                 // assign padded pixel as bottom left original pixel value.
-                paddedOut[y*paddedWidth+x] = in[w*h];
+                paddedOut[y*paddedWidth+x] = in[w*(h-1)];
             
             } else if (x >= leftIdx and x < rightIdx and y >= botIdx) {
                 // we are in region 7
