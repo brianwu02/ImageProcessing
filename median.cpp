@@ -11,11 +11,12 @@
 using namespace std;
 
 void median(imageP, int, int, imageP);
+void padImage(imageP, int, imageP);
 
 int main(int argc, char** argv) {
     
     int sz, avg_nbrs;
-    imageP I1, I2;
+    imageP I1, I2, paddedImg;
    
     cout << "in      : " << argv[1] << endl;
     cout << "sz      : " << argv[2] << endl;
@@ -38,14 +39,20 @@ int main(int argc, char** argv) {
     I1 = IP_readImage(argv[1]);
 
     I2 = NEWIMAGE;
+    paddedImg = NEWIMAGE;
 
+    padImage(I1, sz, paddedImg);
     median(I1, sz, avg_nbrs, I2);
 
     IP_saveImage(I2, argv[4]);
-
     IP_freeImage(I1);
     IP_freeImage(I2);
+    IP_freeImage(paddedImg);
 
+}
+
+void padImage(imageP I1, int sz, imageP paddedImg) {
+    
 }
 
 void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
