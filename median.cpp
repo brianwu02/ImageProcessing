@@ -115,9 +115,6 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
         // remove the first element of the sorted index and add the next element. this way, we are
         // not doing as many element copies and std::sort would take less time.
         
-        // pre-compute the average if needed.
-        if (avg_nbrs != 0) {
-        }
 
         for (int x=0; x<w; x++) {
             // copy values that are needed to the Kernel Buffer
@@ -132,7 +129,15 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
                 out[y*w+x] = kernelBuffer[medianIndex];
             } else {
                 // else, take the average of the pixels above and below pixel.
+                int startIdx = medianIndex - avg_nbrs;
+                int endIdx = medianIndex + avg_nbrs;
+                int sum, avg = 0;
 
+                for (int k = startIdx; k <= endIdx; k++) {
+                    sum += kernelBuffer[k];
+                }
+                avg = sum / (avg_nbrs + 1);
+                out[y*w+x] = avg;
             }
 
 
