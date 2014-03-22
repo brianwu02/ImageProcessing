@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 }
 
 void padImage(imageP I1, int sz, imageP paddedImg) {
-    /* 
+    /* PIXEL REPLICATION PADDING
      * takes I1 as input image, I1 and applies pixel replication technique
      * to paddedImg using kernel size sz * sz.
      */
@@ -71,6 +71,8 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     int paddedTotal = paddedImg->height * paddedImg->width;
     paddedImg->image = (unsigned char*) malloc(paddedTotal);
     paddedOut = paddedImg->image;
+
+
     
     
     
