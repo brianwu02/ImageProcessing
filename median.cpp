@@ -84,6 +84,8 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
     int pad_size = (sz * 2);
     int buf_size = (w + pad_size);
     short buf[buf_size];
+
+    int kernel_size = (sz * 2) + 1;
     
 
     for (int y=0; y<h; y++) {
@@ -104,7 +106,13 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
+        // do some some calculation here.
+        for (i=0; i<kernel_size; i++) {
+        }
+
+        int medianIndex = sz;
         for (int x=0; x<w; x++) {
+
 
 
 
