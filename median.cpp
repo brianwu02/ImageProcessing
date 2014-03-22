@@ -85,7 +85,7 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
     int buf_size = (w + pad_size);
     short buf[buf_size];
 
-    int kernel_size = (sz * 2);
+    int kernel_size = (sz * sz);
     short kernelBuffer[kernel_size];
 
     for (int y=0; y<h; y++) {
@@ -94,7 +94,7 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             if (x <= sz) {
                 // x is a pad index on the left so we must pad using pixel replication.
                 // take the left most pixel of that row.
-                buf[x] = in[y*w+0];
+                buf[x] = in[y*w];
             } else if (x >= w) {
                 // x is a pad index on the right.
                 // take the right most pixel of that row.
@@ -106,15 +106,13 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
-        // initialize the kernel buffer, assume 3 by 3
-        int sum = 0;
-        for (i=0; i<kernel_size; i++) {
-            kernelBuffer[i] = buf[i];
-        }
-
         int medianIndex = sz;
         for (int x=0; x<w; x++) {
-            // extract & sort the kernel.
+            // copy values that are needed to the Kernel Buffer
+            for (int i=0; i<kernel_size; i++) {
+                kernelBuffer[i] = buf[i];
+            }
+
             
 
 
