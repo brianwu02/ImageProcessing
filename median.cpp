@@ -55,6 +55,20 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     /* PIXEL REPLICATION PADDING
      * takes I1 as input image, I1 and applies pixel replication technique
      * to paddedImg using kernel size sz * sz.
+     *   Pixel Replcation Example:
+     *   
+     *   AA|ABCDEFGH|HH         
+     *   AA|ABCDEFGH|HH        region0  |  region1  |  region2
+     *   --------------        -------------------------------
+     *   AA|ABCDEFGH|HH        region3  |           |  region5
+     *   II|IJKLMNOP|PP        region3  |  region4  |  region5
+     *   QQ|QRSTUVWX|XX        region3  |  orig img |  region5 
+     *   YY|YZabcdef|ff        region3  |           |  region5 
+     *   gg|ghijklmn|nn        -------------------------------
+     *   oo|opqrstuv|vv        region6  | region 7  | region 8
+     *   --------------
+     *   oo|opqrstuv|vv
+     *   oo|opqrstuv|vv
      */
 
     int n = (sz - 1) / 2;
@@ -92,15 +106,11 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
                 // x, y index is within original image coordinate
                 paddedOut[y*w+x] = in[y*w+x];
             } else if (y < leftIdx) {
-                // y index is to the left of original image
-            
-            } else if ( y > leftIdx) {
-                // y index is to the right of the original image
             }
-
-
         }
     }
+
+
 
     
     
