@@ -2,12 +2,11 @@
  * Image Processing
  * Brian Wu
  * median filter
- * Usage: sharpen in sz avg_nbrs out
+ * Usage: median in sz avg_nbrs out
  */
 #include "IP.h"
 #include <algorithm>
 
-static const size_t v_size = 10;
 
 using namespace std;
 
@@ -17,14 +16,7 @@ int main(int argc, char** argv) {
     
     int sz, avg_nbrs;
     imageP I1, I2;
-    int array[10] = {10,9,1,3,21,59,2,7,9,4};
-
-    std::sort(array,array+10);
-
-    for (int i=0; i<10; i++) {
-        cout << array[i] << endl;
-    }
-
+   
     cout << "in      : " << argv[1] << endl;
     cout << "sz      : " << argv[2] << endl;
     cout << "avg_nbrs: " << argv[3] << endl;
@@ -81,11 +73,13 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
 
     // create buffer to that will represent the kernel buffer
     // for simplicity sake, we will assume sz = 3;
+    
     int pad_size = (sz * 2);
     int buf_size = (w + pad_size);
     short buf[buf_size];
 
     int kernel_size = (sz * sz);
+    static const size_t v_size = kernel_size;
     short kernelBuffer[kernel_size];
 
     for (int y=0; y<h; y++) {
@@ -106,16 +100,22 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
+        // need to pad the input image.
+
+
+
+
  
         int medianIndex = kernel_size / 2; // check that this is actually the middle index
-        int kernelSum = 0;
 
         // optimizations that can be done:
         // 1. pre-sort the array once before each inner loop. then for each consequent inner loop,
         // remove the first element of the sorted index and add the next element. this way, we are
         // not doing as many element copies and std::sort would take less time.
         
+        //cout << "medianIndex: " << medianIndex << endl;
 
+        /*
         for (int x=0; x<w; x++) {
             // copy values that are needed to the Kernel Buffer
             for (int i=0; i<kernel_size; i++) {
@@ -127,27 +127,22 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             if (avg_nbrs == 0) {
                 // if avg_nbrs is 0, then take the median value.
                 out[y*w+x] = kernelBuffer[medianIndex];
+                //cout << "value: " << kernelBuffer[medianIndex] << endl;
             } else {
                 // else, take the average of the pixels above and below pixel.
                 int startIdx = medianIndex - avg_nbrs;
                 int endIdx = medianIndex + avg_nbrs;
-                int sum, avg = 0;
+                int sum = 0;
+                int avg = 0;
 
                 for (int k = startIdx; k <= endIdx; k++) {
                     sum += kernelBuffer[k];
                 }
                 avg = sum / (avg_nbrs + 1);
+                cout << "avg is: " << avg << endl;
                 out[y*w+x] = avg;
             }
-
-
-
-            
-
-
-
-
-        }
+        }*/
     }
 }
 
