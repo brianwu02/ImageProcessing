@@ -37,7 +37,6 @@ int main(int argc, char** argv) {
         cerr << "sz is must be an odd number." << endl;
         exit(1);
     }
-    
 
     I1 = IP_readImage(argv[1]);
 
@@ -75,9 +74,24 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
     int w = I1->width;
     int h = I1->height;
 
+    // create buffer to that will represent the kernel buffer
+    short buf[0];
+    
+    for (int y=0; y<h; y++) {
+        for (int x=0; x<w; x++) {
 
 
 
+        }
+    }
+}
 
-
+int clip(int a) {
+    if (a >= 255) {
+        return 255;
+    } else if (a <= 0) {
+        return 0;
+    } else {
+        return a;
+    }
 }
