@@ -35,4 +35,25 @@ int main(int argc, char** argv) {
 }
 
 void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
+    
+    int i, total;
+    unsigned char *in, *out;
+
+    total = I1->width * I1->height;
+
+    I2->height = I1->height;
+    I2->width = I1->width;
+
+    I2->image = (unsigned char *) malloc(total);
+
+    in = I1->image;
+    out = I2->image;
+
+    if (I2->image == NULL) {
+        cerr << "not enough memory\n";
+        exit(1);
+    }
+
+    int w = I1->width;
+    int h = I1->height;
 }

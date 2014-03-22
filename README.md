@@ -1,6 +1,14 @@
 ## Image Processing
 
 
+####median.cpp
+
+Apply median filter to *in* over a neighborhood of size *sz* * *sz*. Input values are sorted
+and the median is averaged with *avg_nbrs* pixels below and *avg_nbrs* pixels above the sorted list.
+result is stored in *out*. If *avg_nbrs* = 0, then output is the median. If *avg_nbrs* = sz^2 / 2,
+then the output should be idential to *blur.cpp* pad image using pixel replication.
+
+
 
 ####sharpen.cpp
 
@@ -17,8 +25,6 @@ __fctr__: [INT] A multiplier that will be applied to the difference between blur
 and original image.
 
 __out__: [FILE] output image.
-
-
 
 
 ####blur.cpp
