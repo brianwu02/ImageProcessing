@@ -7,7 +7,6 @@
 #include "IP.h"
 #include <algorithm>
 
-
 using namespace std;
 
 void median(imageP, int, int, imageP);
@@ -113,40 +112,40 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
 
             // this condition comes first since it will occur most frequent.
             // dont need the branch predictor working so hard.
-            if (y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx) {
+            if (x >= leftIdx and x < rightIdx and y >= topIdx and y < botIdx) {
                 // we are in region 4.
                 paddedOut[y*paddedWidth+x] = in[(y-n) * w + (x-m) ];
 
-            } else if (y < leftIdx and x < topIdx) {
+            } else if (x < leftIdx and y < topIdx) {
                 // we are in region 0.
                 // assign padded pixel as upper left original pixel value.
                 paddedOut[y*paddedWidth+x] = in[0]; 
 
-            } else if (y >= leftIdx and y < rightIdx and x < topIdx) {
+            } else if (x >= leftIdx and x < rightIdx and y < topIdx) {
                 // we are in region 1.
                 // assign pixel values to be top row of original image.
                 paddedOut[y*paddedWidth+x] = in[(x-m)]; 
                 
-            } else if (y >= rightIdx and x < topIdx) {
+            } else if (x >= rightIdx and y < topIdx) {
                 // we are in region 2.
                 // assign padded pixels as upper right original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w-1];
 
-            } else if (y < leftIdx and x >= topIdx and x < botIdx) {
+            } else if (x < leftIdx and y >= topIdx and y < botIdx) {
                 // we are in region 3.
 
-            } else if (y >= rightIdx and x >= topIdx and x < botIdx) {
+            } else if (x >= rightIdx and y >= topIdx and y < botIdx) {
                 // we are in region 5
 
-            } else if (y < leftIdx and x >= botIdx) {
+            } else if (x < leftIdx and y >= botIdx) {
                 // we are in region 6
                 // assign padded pixel as bottom left original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w*h];
             
-            } else if (y >= leftIdx and y < rightIdx and x >= botIdx) {
+            } else if (x >= leftIdx and x < rightIdx and y >= botIdx) {
                 // we are in region 7
             
-            } else if (y >= rightIdx and x >= botIdx) {
+            } else if (x >= rightIdx and y >= botIdx) {
                 // we are in region 8
                 // assign padded pixel as bottom right original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w*h-1];
