@@ -169,12 +169,13 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
     }
 }
 
-void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
+void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     
-    int i, total;
-    unsigned char *in, *out;
+    int i, total, paddedTotal;
+    unsigned char *in, *out, *paddedIn;
 
     total = I1->width * I1->height;
+    paddedTotal = paddedImg->height * paddedImg->width;
 
     I2->height = I1->height;
     I2->width = I1->width;
@@ -183,6 +184,7 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
 
     in = I1->image;
     out = I2->image;
+    paddedIn = paddedImg->image;
 
     if (I2->image == NULL) {
         cerr << "not enough memory\n";
@@ -191,6 +193,8 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
 
     int w = I1->width;
     int h = I1->height;
+    int paddedWidth = paddedImg->width;
+    int paddedHeight = paddedImg->height;
 
     // create buffer to that will represent the kernel buffer
     // for simplicity sake, we will assume sz = 3;
