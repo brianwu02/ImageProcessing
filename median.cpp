@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void median(imageP, int, int, imageP);
+void median(imageP, imageP, int, int, imageP);
 void padImage(imageP, int, imageP);
 
 int main(int argc, char** argv) {
@@ -41,10 +41,10 @@ int main(int argc, char** argv) {
     paddedImg = NEWIMAGE;
 
     padImage(I1, sz, paddedImg);
-    median(paddedImg, sz, avg_nbrs, I2);
+    median(I1, paddedImg, sz, avg_nbrs, I2);
 
-    IP_saveImage(paddedImg, argv[4]);
-    //IP_saveImage(I2, argv[4]);
+    //IP_saveImage(paddedImg, argv[4]);
+    IP_saveImage(I2, argv[4]);
     IP_freeImage(I1);
     IP_freeImage(I2);
     IP_freeImage(paddedImg);
