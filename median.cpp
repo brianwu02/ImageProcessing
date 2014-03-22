@@ -5,6 +5,10 @@
  * Usage: sharpen in sz avg_nbrs out
  */
 #include "IP.h"
+#include <algorithm>
+
+static const size_t v_size = 10;
+
 using namespace std;
 
 void median(imageP, int, int, imageP);
@@ -13,6 +17,13 @@ int main(int argc, char** argv) {
     
     int sz, avg_nbrs;
     imageP I1, I2;
+    int array[10] = {10,9,1,3,21,59,2,7,9,4};
+
+    std::sort(array,array+10);
+
+    for (int i=0; i<10; i++) {
+        cout << array[i] << endl;
+    }
 
     cout << "in      : " << argv[1] << endl;
     cout << "sz      : " << argv[2] << endl;
@@ -56,4 +67,7 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
 
     int w = I1->width;
     int h = I1->height;
+
+
+
 }
