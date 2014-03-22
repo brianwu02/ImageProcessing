@@ -1,8 +1,6 @@
 ## Image Processing
 
 
-Files not included in repo: IP.h, IPutil.cpp, makefile.
-
 
 ####sharpen.cpp
 
@@ -11,11 +9,15 @@ difference back to input image.
 
 usage: __sharpen__ *in* *sz* *fctr* *out*
 
-__in__: input image. PGM file.
+__in__: [FILE] input image. PGM file.
 
-__sz__: [Int]. filter of dimension sz * sz.
+__sz__: [INT] filter of dimension sz * sz.
 
-__fctr__: Integer.
+__fctr__: [INT] A multiplier that will be applied to the difference between blurred
+and original image.
+
+__out__: [FILE] output image.
+
 
 
 
