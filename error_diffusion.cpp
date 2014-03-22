@@ -161,7 +161,6 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
             if ((y % 3) == 1) {
                 for (int i = 0; i < w; i++) {
                    buf[0][i+2] = in[y*w+i];
-                   cout << buf[0][i+2] << endl;
                 }
             }
             if ((y % 3) == 2) {
