@@ -52,6 +52,18 @@ int main(int argc, char** argv) {
 }
 
 void padImage(imageP I1, int sz, imageP paddedImg) {
+    /* 
+     * takes I1 as input image, I1 and applies pixel replication technique
+     * to paddedImg using kernel size sz * sz.
+     */
+
+    int n = (sz - 1) / 2;
+    int m = (sz - 1) / 2;
+    unsigned char *in, *paddedOut;
+
+    int total = I1->width * I1->height;
+    
+    
     
 }
 
