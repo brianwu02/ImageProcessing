@@ -56,15 +56,15 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
      * takes I1 as input image, I1 and applies pixel replication technique
      * to paddedImg using kernel size sz * sz.
      *   Pixel Replcation Example:
-     *   
-     *   AA|ABCDEFGH|HH       
+     *                                leftIdx     rightIdx
+     *   AA|ABCDEFGH|HH                 
      *   AA|ABCDEFGH|HH        region0  |  region1  |  region2
-     *   --------------        -------------------------------
+     *   --------------        -------------------------------  topIdx
      *   AA|ABCDEFGH|HH        region3  |           |  region5
      *   II|IJKLMNOP|PP        region3  |  region4  |  region5
      *   QQ|QRSTUVWX|XX        region3  |  orig img |  region5 
      *   YY|YZabcdef|ff        region3  |           |  region5 
-     *   gg|ghijklmn|nn        -------------------------------
+     *   gg|ghijklmn|nn        -------------------------------  botIdx
      *   oo|opqrstuv|vv        region6  | region 7  | region 8
      *   --------------
      *   oo|opqrstuv|vv       
@@ -123,10 +123,12 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
 
             } else if (y >= leftIdx and y < rightIdx and x < topIdx) {
                 // we are in region 1.
+                // assign pixel values to be top row of original image.
+                paddedOut[y*paddedWidth+x] = in[(x-m)]; 
                 
             } else if (y >= rightIdx and x < topIdx) {
                 // we are in region 2.
-                // assign padded pixels as upper right original pixel value
+                // assign padded pixels as upper right original pixel value.
                 paddedOut[y*paddedWidth+x] = in[w-1];
 
             } else if (y < leftIdx and x >= topIdx and x < botIdx) {
