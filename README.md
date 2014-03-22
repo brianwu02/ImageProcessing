@@ -1,5 +1,5 @@
 ## Image Processing
-*please don't kill me for nesting for loops and neglecting to factor out methods*
+*please don't kill me for deeply nested for loops and neglecting to factor out methods*
 
 ####median.cpp
 
@@ -7,6 +7,10 @@ Apply median filter to *in* over a neighborhood of size *sz* * *sz*. Input value
 and the median is averaged with *avg_nbrs* pixels below and *avg_nbrs* pixels above the sorted list.
 result is stored in *out*. If *avg_nbrs* = 0, then output is the median. If *avg_nbrs* = sz^2 / 2,
 then the output should be idential to *blur.cpp* pad image using pixel replication.
+
+1. pad the input image using pixel replication technique.
+
+2. create circular buffer that conforms to kernel size.
 
 usage: __median__ *in* *sz* *avg_nbrs* *out*
 
