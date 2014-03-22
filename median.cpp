@@ -38,6 +38,11 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    if (avg_nbrs > sz) {
+        cerr << "average number cannot be larger than sz, at least i dont think it can" << endl;
+        exit(1);
+    }
+
     I1 = IP_readImage(argv[1]);
 
     I2 = NEWIMAGE;
