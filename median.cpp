@@ -88,7 +88,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
 
 
     for (int y=0; y < paddedHeight; y++) {
-        for (int x=0; y < paddedWidth; x++) {
+        for (int x=0; x < paddedWidth; x++) {
             
 
 
