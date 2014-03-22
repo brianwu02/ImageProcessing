@@ -100,7 +100,9 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
             }
         }
 
-        // need to pad the input image.
+        // need to pad the input image with replication technique.
+        int m = (sz - 1) / 2;
+        int n = (sz - 1) / 2;
 
 
 
@@ -115,7 +117,10 @@ void median(imageP I1, int sz, int avg_nbrs, imageP I2) {
         
         //cout << "medianIndex: " << medianIndex << endl;
 
-        /*
+        /* 
+         * this method is wrong because it scans only horizontally. worked for blur & sharpen
+         * but will not work for median.
+         *
         for (int x=0; x<w; x++) {
             // copy values that are needed to the Kernel Buffer
             for (int i=0; i<kernel_size; i++) {
