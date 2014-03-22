@@ -90,7 +90,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
         for (int x=0; x < paddedWidth; x++) {
             if (y >= leftIdx and y < rightIdx and x >= topIdx and x < botIdx) {
                 // x, y index is within original image coordinate
-                //
+                paddedOut[y*w+x] = in[y*w+x];
             } else if (y < leftIdx) {
                 // y index is to the left of original image
             
