@@ -172,7 +172,7 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
 void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     
     int i, total, paddedTotal;
-    unsigned char *in, *out, *paddedIn;
+    unsigned char *in, *out, *paddedIn, *buf;
 
     //static const size_t v_size = kernel_size;
     //kernel_size = (sz * sz);
@@ -209,6 +209,12 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     // allocate memory for an array that will hold (m + n + 1) row buffer.
     unsigned char *arrayOfPointers[bufRowsRequired];
+
+    // allocate memory for the (m+n+1) row of buffers.
+    buf = (unsigned char *) malloc(paddedWidth);
+
+
+    
 
 
 
