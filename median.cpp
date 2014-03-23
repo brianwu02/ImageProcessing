@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     }
 
     if (sz != 3) {
-        cerr << "sz only working for 3, as request" << endl;
+        cerr << "sz only working for 3, as requested. exiting." << endl;
         exit(1);
     }
 
@@ -234,7 +234,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     // try to get this working for 3 * 3 kernel 
     unsigned char *r0, *r1, *r2;
-    unsigned char kernel[kernel_size];
+    unsigned char k[kernel_size];
     for (int y=0; y<h; y++) {
         // need to copy the last row required in to the buffer. should be row = bufRowsRequired
         copyToBuffer(paddedImg, y + (bufRowsRequired-1), bufRowsRequired, buf);
@@ -244,19 +244,23 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
         for (int x=0; x<w; x++) {
             
 
-            kernel[0] = r0[-1];
-            kernel[1] = r0[0];
-            kernel[2] = r0[1];
-            kernel[3] = r1[-1];
-            kernel[4] = r1[0];
-            kernel[5] = r1[1];
-            kernel[6] = r2[-1];
-            kernel[7] = r2[0];
-            kernel[8] = r2[1];
+            k[0] = r0[-1];
+            k[1] = r0[0];
+            k[2] = r0[1];
+            k[3] = r1[-1];
+            k[4] = r1[0];
+            k[5] = r1[1];
+            k[6] = r2[-1];
+            k[7] = r2[0];
+            k[8] = r2[1];
 
-            std::sort(kernel, kernel + kernel_size);
-
-            out[y*w+x] = (kernel[3] + kernel[4] + kernel[5]) / 3;
+            std::sort(k, k + kernel_size);
+            // because im really lazy right now.
+            if (avg_nbrs == 0) {
+                out[y*w+x] = k[4];
+            } else if (avg_nbrs == 1) {
+                out[y*w+x] = (k[3] + k[4] + k[5]) / 3;
+            } else if 
             //out[y*w+x] = (kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6]) / 5;
             //out[y*w+x] = (kernel[1] + kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6] + kernel[7]) / 7;
             //out[y*w+x] = (kernel[0]+kernel[1]+kernel[2]+kernel[3]+kernel[4]+kernel[5]+kernel[6]+kernel[7]+kernel[8]) / 9;
