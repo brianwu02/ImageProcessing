@@ -194,13 +194,22 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
         exit(1);
     }
 
-    int m = (sz - 1) / 2;
+    // number of extra columns required.
+    int m = (sz - 1) / 2; 
+    // number of extra rows required. 
     int n = (sz - 1) / 2;
 
     int w = I1->width;
     int h = I1->height;
     int paddedWidth = paddedImg->width;
     int paddedHeight = paddedImg->height;
+
+    // number of buffer rows required. a 3x3 kernel requires 3 rows, 5x5 requires 5 rows.
+    int bufRowsRequired = m + n + 1;
+
+    // allocate memory for an array that will hold (m + n + 1) row buffer.
+    unsigned char *arrayOfPointers[bufRowsRequired];
+
 
 
     
