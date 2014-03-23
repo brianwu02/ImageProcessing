@@ -11,6 +11,7 @@ using namespace std;
 
 void median(imageP, imageP, int, int, imageP);
 void padImage(imageP, int, imageP);
+void copyToBuffer(imageP, int, int, unsigned char*);
 
 int main(int argc, char** argv) {
     
@@ -213,6 +214,8 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     // allocate memory for the (m+n+1) row of buffers.
     buf = (unsigned char *) malloc(paddedWidth * bufRowsRequired);
 
+    copyToBuffer(I1, 0, bufRowsRequired, buf);
+
     // assign pointers to each 'row' in buffer. If there are 3 rows required for the kernel image,
     // there will be 3 pointers in arrayOfPointers pointing to each portion of the buffer.
     for (int i=0; i<bufRowsRequired; i++) {
@@ -236,8 +239,19 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     }
 }
 
-void copy
+void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer) {
+    int height = I1->height;
+    int width = I1->width;
+    unsigned char *in, *ptr;
+    in = I1->image;
 
+    int bufStartIndex = (row % bufRowsRequired) * width;
+
+    ptr = &buffer[bufStartIndex];
+    for (int x=0; x<width; x++) {
+        ptr[0] = in[row*width+x];
+    }
+}
 
     
 
