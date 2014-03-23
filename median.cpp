@@ -174,6 +174,9 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     int i, total, paddedTotal;
     unsigned char *in, *out, *paddedIn;
 
+    //static const size_t v_size = kernel_size;
+    //kernel_size = (sz * sz);
+
     total = I1->width * I1->height;
     paddedTotal = paddedImg->height * paddedImg->width;
 
@@ -199,16 +202,6 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     int paddedWidth = paddedImg->width;
     int paddedHeight = paddedImg->height;
 
-    // create buffer to that will represent the kernel buffer
-    // for simplicity sake, we will assume sz = 3;
-    
-    int pad_size = (sz * 2);
-    int buf_size = (w + pad_size);
-    unsigned char buf[(2*m) + 1];
-
-    int kernel_size = (sz * sz);
-    static const size_t v_size = kernel_size;
-    short kernelBuffer[kernel_size];
 
     
 
