@@ -11,7 +11,7 @@ using namespace std;
 
 void median(imageP, imageP, int, int, imageP);
 void padImage(imageP, int, imageP);
-void copyToBuffer(imageP, int, int, unsigned char*);
+void copyToBuffer(unsigned char*, int, int, unsigned char*);
 
 int main(int argc, char** argv) {
     
@@ -222,12 +222,12 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     // need to copy bufRowsRequired - 1 rows to the buffer.
     for (int y=0; i<(bufRowsRequired-1); y++) {
-        copyToBuffer(I1, y, bufRowsRequired, buf);
+        copyToBuffer(paddedIn, y, bufRowsRequired, buf);
     }
 
-    for (int y=0; y<paddedHeight; y++) {
+    for (int y=0; y<h; y++) {
         // need to copy the last row required in to the buffer. should be row = bufRowsRequired
-        for (int x=0; x<paddedWidth; x++) {
+        for (int x=0; x<w; x++) {
 
         }
     }
