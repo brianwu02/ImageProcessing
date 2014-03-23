@@ -211,7 +211,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     unsigned char *arrayOfPointers[bufRowsRequired];
 
     // allocate memory for the (m+n+1) row of buffers.
-    buf = (unsigned char *) malloc(paddedWidth);
+    buf = (unsigned char *) malloc(paddedWidth * bufRowsRequired);
 
     // assign pointers to each 'row' in buffer. If there are 3 rows required for the kernel image,
     // there will be 3 pointers in arrayOfPointers pointing to each portion of the buffer.
@@ -229,11 +229,14 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     }
 
     for (int y=0; y<paddedHeight; y++) {
+        // need to copy the last row required in to the buffer. should be row = bufRowsRequired
         for (int x=0; x<paddedWidth; x++) {
-            
 
         }
     }
+}
+
+void copy
 
 
     
@@ -282,7 +285,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
             }
         }*/
     
-}
+
 
 int clip(int a) {
     if (a >= 255) {
