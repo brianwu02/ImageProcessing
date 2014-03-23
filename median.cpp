@@ -221,10 +221,10 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     // need to copy bufRowsRequired - 1 rows to the buffer.
     unsigned char *ptrToRow;
-    for (int i=0; i<(bufRowsRequired-1); i++) {
-        ptrToRow = arrayOfPointers[i];
-        for (int j=0; j<paddedWidth; j++) {
-            ptrToRow[j] = paddedIn[(1+i) + j];
+    for (int y=0; i<(bufRowsRequired-1); y++) {
+        ptrToRow = arrayOfPointers[y];
+        for (int x=0; x<paddedWidth; x++) {
+            ptrToRow[x] = paddedIn[y*paddedWidth+x];
         }
     }
 
