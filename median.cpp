@@ -11,7 +11,7 @@ using namespace std;
 
 void median(imageP, imageP, int, int, imageP);
 void padImage(imageP, int, imageP);
-void copyToBuffer(unsigned char*, int, int, unsigned char*);
+void copyToBuffer(imageP, int, int, unsigned char*);
 
 int main(int argc, char** argv) {
     
@@ -175,9 +175,6 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     int i, total, paddedTotal;
     unsigned char *in, *out, *paddedIn, *buf;
 
-    //static const size_t v_size = kernel_size;
-    //kernel_size = (sz * sz);
-
     total = I1->width * I1->height;
     paddedTotal = paddedImg->height * paddedImg->width;
 
@@ -222,12 +219,40 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     // need to copy bufRowsRequired - 1 rows to the buffer.
     for (int y=0; i<(bufRowsRequired-1); y++) {
-        copyToBuffer(paddedIn, y, bufRowsRequired, buf);
+        copyToBuffer(paddedImg, y, bufRowsRequired, buf);
     }
 
+    int kernel_size = (sz * sz);
+    static const size_t v_size = kernel_size;
+
+    // try to get this working for 3 * 3 kernel 
+    unsigned char *r0, *r1, *r2;
+    unsigned char kernel[9];
     for (int y=0; y<h; y++) {
         // need to copy the last row required in to the buffer. should be row = bufRowsRequired
+        copyToBuffer(paddedImg, y + (bufRowsRequired-1), bufRowsRequired, buf);
+        r0 = arrayOfPointers[y % 3] + m;
+        r1 = arrayOfPointers[(y+1) % 3] + m;
+        r2 = arrayOfPointers[(y+2) % 3] + m;
         for (int x=0; x<w; x++) {
+
+            kernel[0] = r0[-1];
+            kernel[1] = r0[0];
+            kernel[2] = r0[1];
+            kernel[3] = r1[-1];
+            kernel[4] = r1[0];
+            kernel[5] = r1[1];
+            kernel[6] = r2[-1];
+            kernel[7] = r2[0];
+            kernel[8] = r2[1];
+            
+            std::sort(kernel, kernel + kernel_size);
+
+            out[y*w+x] = (kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6]) / 5;
+
+            r0++;
+            r1++;
+            r2++;
 
         }
     }
