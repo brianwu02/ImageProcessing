@@ -250,6 +250,7 @@ void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer
     ptr = &buffer[bufStartIndex];
     for (int x=0; x<width; x++) {
         ptr[0] = in[row*width+x];
+        ptr++;
     }
 }
 
