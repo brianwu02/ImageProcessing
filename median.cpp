@@ -31,6 +31,11 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    if (sz != 3) {
+        cerr << "sz only working for 3, as request" << endl;
+        exit(1);
+    }
+
     if (avg_nbrs > sz) {
         cerr << "average number cannot be larger than sz, at least i dont think it can" << endl;
         exit(1);
@@ -224,10 +229,12 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
     int kernel_size = (sz * sz);
     static const size_t v_size = kernel_size;
+    
+    
 
     // try to get this working for 3 * 3 kernel 
     unsigned char *r0, *r1, *r2;
-    unsigned char kernel[9];
+    unsigned char kernel[kernel_size];
     for (int y=0; y<h; y++) {
         // need to copy the last row required in to the buffer. should be row = bufRowsRequired
         copyToBuffer(paddedImg, y + (bufRowsRequired-1), bufRowsRequired, buf);
@@ -235,6 +242,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
         r1 = arrayOfPointers[(y+1) % 3] + m;
         r2 = arrayOfPointers[(y+2) % 3] + m;
         for (int x=0; x<w; x++) {
+            
 
             kernel[0] = r0[-1];
             kernel[1] = r0[0];
@@ -245,10 +253,13 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
             kernel[6] = r2[-1];
             kernel[7] = r2[0];
             kernel[8] = r2[1];
-            
+
             std::sort(kernel, kernel + kernel_size);
 
-            out[y*w+x] = (kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6]) / 5;
+            out[y*w+x] = (kernel[3] + kernel[4] + kernel[5]) / 3;
+            //out[y*w+x] = (kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6]) / 5;
+            //out[y*w+x] = (kernel[1] + kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6] + kernel[7]) / 7;
+            //out[y*w+x] = (kernel[0]+kernel[1]+kernel[2]+kernel[3]+kernel[4]+kernel[5]+kernel[6]+kernel[7]+kernel[8]) / 9;
 
             r0++;
             r1++;
