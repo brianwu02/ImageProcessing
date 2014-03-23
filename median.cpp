@@ -191,6 +191,9 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
         exit(1);
     }
 
+    int m = (sz - 1) / 2;
+    int n = (sz - 1) / 2;
+
     int w = I1->width;
     int h = I1->height;
     int paddedWidth = paddedImg->width;
@@ -201,39 +204,14 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     
     int pad_size = (sz * 2);
     int buf_size = (w + pad_size);
-    short buf[buf_size];
+    unsigned char buf[(2*m) + 1];
 
     int kernel_size = (sz * sz);
     static const size_t v_size = kernel_size;
     short kernelBuffer[kernel_size];
 
-    for (int y=0; y<h; y++) {
-        // copy the current row in to the buffer
-        for (int x=0; x<buf_size; x++) {
-            if (x <= sz) {
-                // x is a pad index on the left so we must pad using pixel replication.
-                // take the left most pixel of that row.
-                buf[x] = in[y*w];
-            } else if (x >= w) {
-                // x is a pad index on the right.
-                // take the right most pixel of that row.
-                buf[x] = in[y*w+(w-1)];
-            } else {
-                // x is not a pad pixel.
-                // take the current pixel value.
-                buf[x] = in[y*w+x];
-            }
-        }
+    
 
-        // need to pad the input image with replication technique.
-        int m = (sz - 1) / 2;
-        int n = (sz - 1) / 2;
-
-
-
-
- 
-        int medianIndex = kernel_size / 2; // check that this is actually the middle index
 
         // optimizations that can be done:
         // 1. pre-sort the array once before each inner loop. then for each consequent inner loop,
@@ -273,7 +251,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
                 out[y*w+x] = avg;
             }
         }*/
-    }
+    
 }
 
 int clip(int a) {
