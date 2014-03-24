@@ -12,6 +12,9 @@ then the output should be idential to *blur.cpp* pad image using pixel replicati
 
 2. create circular buffer that conforms to kernel size.
 
+3. using the circular buffer, apply median technique where the *sz* * *sz* kernel is sorted
+and the median value is taken. 
+
 usage: __median__ *in* *sz* *avg_nbrs* *out*
 
 __in__: [FILE] input file. PGM format.
