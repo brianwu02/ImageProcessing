@@ -42,3 +42,5 @@ extern imageP	IP_readImage	(char *);
 extern void	IP_saveImage	(imageP, char*);
 extern imageP	IP_allocImage	(int, int, int);
 extern void	IP_freeImage	(imageP);
+extern void padImage(imageP, int, imageP);
+extern void copyToBuffer(imageP, int, int, unsigned char*);
