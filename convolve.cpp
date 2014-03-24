@@ -108,9 +108,22 @@ std:: string readKernelFile(char *file) {
 
 int cfa(char str) {
     // dumb way to parse. convert ASCII char to INT.
-    if (str == 51) {
-        return 3;
-    } else {
+
+    if (str == 48) { return 0; }
+    else if (str == 49) { return 1; }
+    else if (str == 50) { return 2; }
+    else if (str == 51) { return 3; } 
+    else if (str == 52) { return 4; }
+    else if (str == 53) { return 5; }
+    else if (str == 54) { return 6; }
+    else if (str == 55) { return 7; }
+    else if (str == 56) { return 8; }
+    else if (str == 57) { return 9; }
+
+
+    
+    
+    else {
         cerr << "error parsing" << endl;
         return str;
     }
