@@ -11,45 +11,39 @@
 
 using namespace std;
 
+std::string readKernel(char*);
+
 int main(int argc, char** argv) {
     
     ifstream myReadFile;
 
     int i, total, arg1;
     unsigned char *in;
-    char *tmp;
+    std::string kernel;
     imageP I1, I2;
     std::string str;
-    std::string filename = argv[1];
 
-    if (filename.empty()) {
-        cerr << "you need to enter a filename" << endl;
-        exit(1);
+    kernel = readKernel(argv[1]);
+
+    for (int i = 0; i<kernel.length(); i++) {
+        cout << kernel[i];
     }
+    return 0;
+}
 
-    cout << filename << endl;
-
-
-
-
-
-    std::ifstream t("file1.AF");
+std:: string readKernel(char *file) {
+    std::string filename = file;
+    std::string str;
+    std::ifstream t(filename);
 
     t.seekg(0, std::ios::end);
     str.reserve(t.tellg());
     t.seekg(0, std::ios::beg);
 
     str.assign((std::istreambuf_iterator<char>(t)),
-        std::istreambuf_iterator<char>());
-    
-    for (int i = 0; i<str.length(); i++) {
-        cout << str[i];
-    }
+            std::istreambuf_iterator<char>());
 
-
-
-
-    return 0;
+    return str;
 
 
 }
