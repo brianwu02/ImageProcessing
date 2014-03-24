@@ -23,7 +23,7 @@ LIBS	= -lm	# Libraries to link with (-lm is the math library)
 COMPILE_EXECUTABLE = $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $? $(LIBS)
 
 # These are all the files to be compiled.
-ALL = blur sharpen unordered_dither ordered_dither halftone error_diffusion error_diffusion1 median
+ALL = blur sharpen unordered_dither ordered_dither halftone error_diffusion error_diffusion1 median convolve 
 all:	$(ALL)
 
 # List of executable targets
@@ -35,6 +35,7 @@ error_diffusion: $($@.o) IPutil.o
 error_diffusion1: $($@.o) IPutil.o
 sharpen: $(@.o) IPutil.o
 median: $(@.o) IPutil.o
+convolve: $(@.o) IPutil.o briansFunctions.o
 
 
 # Clean target to remove backup, object, and core files
@@ -45,6 +46,8 @@ cleanx:
 
 # Dependencies
 IPutil.o:	IP.h
+briansFunctions.o: IP.h
+
 blur.o: IP.h
 unordered_dither.o: IP.h
 ordered_dither.o: IP.h
@@ -53,5 +56,6 @@ error_diffusion.o: IP.h
 error_diffusion1.o: IP.h
 sharpen.o: IP.h
 median.o: IP.h
+convolve.o: IP.h
 
 
