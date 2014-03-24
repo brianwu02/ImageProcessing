@@ -14,13 +14,7 @@ using namespace std;
 std::string readKernel(char*);
 
 int main(int argc, char** argv) {
-    
-    ifstream myReadFile;
-
-    int i, total, arg1;
-    unsigned char *in;
     std::string kernel;
-    imageP I1, I2;
     std::string str;
 
     kernel = readKernel(argv[1]);
