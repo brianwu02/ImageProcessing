@@ -17,6 +17,7 @@
 #define MaxGray		255
 #define MXGRAY		256
 #define NEWIMAGE	((imageP) malloc(sizeof(imageS)))
+#define NEWKERNEL   ((kernelP) malloc(sizeof(kernelS)))
 
 /* useful macros */
 #define ABS(A)		((A) >= 0 ? (A) : -(A))
