@@ -1,6 +1,31 @@
 ## Image Processing
 *please don't kill me for deeply nested for loops and neglecting to factor out methods*
 
+####convolve.cpp
+
+Convolve input image *in* with *kernel* and store result in *out*. Convolution kernel is stored
+in file *kernel*. 
+
+*kernel* is a 2-D array of ASCII numbers. first line of this file consists of width & height.
+
+1. Read kernel ASCII values from file *in*.
+
+2. Pad the input image using pixel replication.
+
+3. Apply the Kernel filter to the input image. 
+
+4. profit.
+
+usage: __convolve__: *in* *kernel* *out*
+
+__in__: [FILE] input file. PGM Format.
+
+__kernel__: [FILE] input kernel. File consisting of ASCII numbers.
+
+__out__: [FILE] output file. PGM Format.
+
+
+
 ####median.cpp
 
 Apply median filter to *in* over a neighborhood of size *sz* * *sz*. Input values are sorted
