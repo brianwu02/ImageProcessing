@@ -38,6 +38,12 @@ typedef struct {	/* image data structure	 */
 	uchar *image;	/* pointer to image data */
 } imageS, *imageP;
 
+typedef struct {
+    int width;
+    int height;
+    unsigned char *kernel;
+} kernelS, *kernelP;
+
 extern imageP	IP_readImage	(char *);
 extern void	IP_saveImage	(imageP, char*);
 extern imageP	IP_allocImage	(int, int, int);

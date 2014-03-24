@@ -11,21 +11,35 @@
 
 using namespace std;
 
-std::string readKernel(char*);
+std::string readKernelFile(char*);
+unsigned char initKernel(std::string);
 
 int main(int argc, char** argv) {
-    std::string kernel;
+    std::string kernelString;
     std::string str;
 
-    kernel = readKernel(argv[1]);
+    kernelString = readKernelFile(argv[1]);
 
-    for (int i = 0; i<kernel.length(); i++) {
-        cout << kernel[i];
+    for (int i = 0; i<kernelString.length(); i++) {
+        cout << kernelString[i];
     }
+    return 0;
+
+
+}
+
+unsigned char initKernel(std::string str) {
+
     return 0;
 }
 
-std:: string readKernel(char *file) {
+typedef struct {
+    int width;
+    int height;
+    float *kernel;
+}kernelS, *kernelP;
+
+std:: string readKernelFile(char *file) {
     std::string filename = file;
     std::string str;
     std::ifstream t(filename);
@@ -39,5 +53,5 @@ std:: string readKernel(char *file) {
 
     return str;
 
-
 }
+
