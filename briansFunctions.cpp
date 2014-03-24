@@ -1,11 +1,9 @@
 /**
  * Image Processing
  * Brian Wu
- * median filter
- * Usage: median in sz avg_nbrs out
+ * A bunch of functions that may be used in the future
  */
 #include "IP.h"
-#include <algorithm>
 
 using namespace std;
 
