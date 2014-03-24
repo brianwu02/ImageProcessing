@@ -43,11 +43,18 @@ int main(int argc, char** argv) {
     k->width = 3;
     k->kernel = (float *) malloc(k->width * k->height);
     int ksize = k->height * k->width;
-    float *kimg;
-    for (int i=0; i<ksize; i++) {
-        
-    }
-
+    float *kimg = k->kernel;
+    
+    // hard code some sample values
+    kimg[0] = .11;
+    kimg[1] = .11;
+    kimg[2] = .11;
+    kimg[3] = .11;
+    kimg[4] = .11;
+    kimg[5] = .11;
+    kimg[6] = .11;
+    kimg[7] = .11;
+    kimg[8] = .11;
 
 
     // fix the size.
