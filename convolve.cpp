@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     kernelP k;
 
     // read kernel file and convert to std::string
-    kernelString = readKernelFile(argv[1]);
+    //kernelString = readKernelFile(argv[1]);
 
     // parse kernel string and return an kernelP data structure.
     //k = getKernel(kernelString);
@@ -37,8 +37,10 @@ int main(int argc, char** argv) {
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
     paddedImg = NEWIMAGE;
+    k = NEWKERNEL;
 
     // create a dummy kernel structure of w=3, h=3.
+    
     k->height = 3;
     k->width = 3;
     k->kernel = (float *) malloc(k->width * k->height);
@@ -46,6 +48,7 @@ int main(int argc, char** argv) {
     float *kimg = k->kernel;
     
     // hard code some sample values
+    
     kimg[0] = .11;
     kimg[1] = .11;
     kimg[2] = .11;
@@ -55,25 +58,43 @@ int main(int argc, char** argv) {
     kimg[6] = .11;
     kimg[7] = .11;
     kimg[8] = .11;
-
+    
 
     // fix the size.
     int sz = 3;
     padImage(I1, sz, paddedImg);
 
-    convolve(I1, paddedImg, k, I2);
+    //convolve(I1, paddedImg, k, I2);
 
 
 
     return 1;
 }
 
-void convolve(imageP I1, kernelP k, imageP I2) {
+void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
+    /* I1 => original Image
+     * paddedImg => the pixel replicated Image
+     * k => the kernel 
+     * I2 => outfile
+     *
+     */
     int kw = k->width;
     int kh = k->height;
+    int kt = k->width * k->height;
     int total = I1->width * I1->height;
 
     I2->height = I1->height;
+    I2->width = I1->width;
+    I2->image = (unsigned char *) malloc(total);
+
+    unsigned char *in, *out, *paddedIn, *buf;
+    float *kernelP;
+
+    /*for (int i=0; i<kt; i++) {
+        cout << kernelP[0] << endl;
+    }*/
+
+
 
 
 
@@ -81,11 +102,11 @@ void convolve(imageP I1, kernelP k, imageP I2) {
 }
 
 kernelP allocateKernel(int w, int h, int s) {
-    unsigned char *p;
+    float *p;
     kernelP k;
 
     k = (kernelP) malloc(sizeof(kernelS));
-    p = (unsigned char *) malloc(w * h * s);
+    p = (float *) malloc(w * h * s);
     if (p == NULL) {
         cerr << "allocateKernel error, Insufficient memory" << endl;
         return ((kernelP) NULL);
