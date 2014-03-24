@@ -17,6 +17,7 @@ unsigned char initKernel(std::string);
 int main(int argc, char** argv) {
     std::string kernelString;
     std::string str;
+    kernelP k;
 
     kernelString = readKernelFile(argv[1]);
 
@@ -26,14 +27,6 @@ int main(int argc, char** argv) {
     return 0;
 
 
-}
-
-unsigned char initKernel(std::string str) {
-    unsigned char *p;
-    kernelP kernel;
-
-
-    return 0;
 }
 
 kernelP allocateKernel(int w, int h, int s) {
@@ -54,6 +47,18 @@ kernelP allocateKernel(int w, int h, int s) {
     return k;
 
 }
+
+kernelP getKernel(std::string str) {
+    kernelP k;
+    int w, h;
+    unsigned char *out;
+
+    k = allocateKernel(w, h, sizeof(unsigned char));
+    out = k->kernel;
+    return (kernelP) k;
+}
+
+
 
 std:: string readKernelFile(char *file) {
     std::string filename = file;
