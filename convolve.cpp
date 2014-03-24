@@ -81,18 +81,61 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     int kw = k->width;
     int kh = k->height;
     int kt = k->width * k->height;
+
+    int height = I1->height;
+    int width = I1->width;
     int total = I1->width * I1->height;
 
     I2->height = I1->height;
     I2->width = I1->width;
     I2->image = (unsigned char *) malloc(total);
 
-    unsigned char *in, *out, *paddedIn, *buf;
+    unsigned char *in, *out, *paddedIn;
+    paddedIn = paddedImg->image;
+    int paddedWidth = paddedImg->width;
+    int paddedHeight = paddedImg->height;
+    
+    float *buf;
     float *kernelP = k->kernel;
 
     for (int i=0; i<kt; i++) {
         cout << kernelP[0] << endl;
     }
+    
+    // do a lot of hard coded values because im tired and I just want it to work for 3*3 kernel....
+    int bufRowsRequired = 3;
+
+    // initialize buffer for kernel
+    buf = (float *) malloc(paddedWidth * bufRowsRequired);
+
+    // allocate memory for an array that will hold all the pointers to circlar buffer
+    float *arrayOfPointers[bufRowsRequired];
+
+    // store points in array of pointers
+    for (int i=0; i<bufRowsRequired; i++) {
+        arrayOfPointers[i] = &buf[i*paddedWidth];
+    }
+
+    // initialize and store the pointers to buffer in arrayOfPointers
+    for (int y=0; y<bufRowsRequired-1; y++) {
+        floatCopyToBuffer(paddedImg, y, bufRowsRequired, buf);
+    }
+    float *r0, *r1, *r2;
+
+    for (int y=0; y<height; y++) {
+        // copy next row to buffer
+        floatCopyToBuffer(paddedImg, y+(bufRowsRequired-1), bufRowsRequired, buf);
+        r0 = arrayOfPointers[y % 3] + 1;
+        r1 = arrayOfPointers[(y+1) % 3] + 1;
+        r2 = arrayOfPointers[(y+2) % 3] + 1;
+
+        for (int x=0; x<width; x++) {
+            
+        }
+    }
+
+
+
 
 
 
