@@ -41,7 +41,7 @@ typedef struct {	/* image data structure	 */
 typedef struct {
     int width;
     int height;
-    unsigned char *kernel;
+    float *kernel;
 } kernelS, *kernelP;
 
 extern imageP	IP_readImage	(char *);
