@@ -13,6 +13,7 @@
 
 using namespace std;
 
+void convolve(imageP, imageP, kernelP, imageP);
 std::string readKernelFile(char*);
 kernelP getKernel(std::string);
 int cfa(char);
@@ -20,18 +21,56 @@ int cfa(char);
 int main(int argc, char** argv) {
     std::string kernelString;
     std::string str;
+    imageP I1, I2, paddedImg;
     kernelP k;
 
     // read kernel file and convert to std::string
     kernelString = readKernelFile(argv[1]);
 
     // parse kernel string and return an kernelP data structure.
-    k = getKernel(kernelString);
+    //k = getKernel(kernelString);
 
     /*for (int i = 0; i<kernelString.length(); i++) {
         cout << kernelString[i];
     }*/
-    return 0;
+
+    I1 = IP_readImage(argv[1]);
+    I2 = NEWIMAGE;
+    paddedImg = NEWIMAGE;
+
+    // create a dummy kernel structure of w=3, h=3.
+    k->height = 3;
+    k->width = 3;
+    k->kernel = (float *) malloc(k->width * k->height);
+    int ksize = k->height * k->width;
+    float *kimg;
+    for (int i=0; i<ksize; i++) {
+        
+    }
+
+
+
+    // fix the size.
+    int sz = 3;
+    padImage(I1, sz, paddedImg);
+
+    convolve(I1, paddedImg, k, I2);
+
+
+
+    return 1;
+}
+
+void convolve(imageP I1, kernelP k, imageP I2) {
+    int kw = k->width;
+    int kh = k->height;
+    int total = I1->width * I1->height;
+
+    I2->height = I1->height;
+
+
+
+
 }
 
 kernelP allocateKernel(int w, int h, int s) {
