@@ -12,14 +12,17 @@
 using namespace std;
 
 std::string readKernelFile(char*);
-unsigned char initKernel(std::string);
+kernelP getKernel(std::string);
 
 int main(int argc, char** argv) {
     std::string kernelString;
     std::string str;
     kernelP k;
 
+    // read kernel file and convert to std::string
     kernelString = readKernelFile(argv[1]);
+    // parse kernel string and return an kernelP data structure.
+    k = getKernel(kernelString);
 
     for (int i = 0; i<kernelString.length(); i++) {
         cout << kernelString[i];
