@@ -6,6 +6,7 @@
  */
 #include "IP.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -54,6 +55,7 @@ int main(int argc, char** argv) {
     IP_freeImage(I1);
     IP_freeImage(I2);
     IP_freeImage(paddedImg);
+    return 0;
 
 }
 
@@ -230,7 +232,6 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     int kernel_size = (sz * sz);
     static const size_t v_size = kernel_size;
     
-    
 
     // try to get this working for 3 * 3 kernel 
     unsigned char *r0, *r1, *r2;
@@ -254,16 +255,20 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
             k[7] = r2[0];
             k[8] = r2[1];
 
+
             std::sort(k, k + kernel_size);
             // because im really lazy right now.
             if (avg_nbrs == 0) {
                 out[y*w+x] = k[4];
             } else if (avg_nbrs == 1) {
                 out[y*w+x] = (k[3] + k[4] + k[5]) / 3;
-            } else if 
-            //out[y*w+x] = (kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6]) / 5;
-            //out[y*w+x] = (kernel[1] + kernel[2] + kernel[3] + kernel[4] + kernel[5] + kernel[6] + kernel[7]) / 7;
-            //out[y*w+x] = (kernel[0]+kernel[1]+kernel[2]+kernel[3]+kernel[4]+kernel[5]+kernel[6]+kernel[7]+kernel[8]) / 9;
+            } else if (avg_nbrs == 2) {
+                out[y*w+x] = (k[2] + k[3] + k[4] + k[5] + k[6]) / 5;
+            } else if (avg_nbrs == 3) {
+                out[y*w+x] = (k[1] + k[2] + k[3] + k[4] + k[5] + k[6] + k[7]) / 7;
+            } else if (avg_nbrs == 4) {
+                out[y*w+x] = (k[0] + k[1] + k[2] + k[3] + k[4] + k[5] + k[6] + k[7] + k[8]) / 9;
+            }
 
             r0++;
             r1++;
@@ -271,6 +276,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
 
         }
     }
+    free(buf);
 }
 
 void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer) {
