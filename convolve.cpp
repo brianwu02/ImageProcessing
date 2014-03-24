@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     int sz = 3;
     padImage(I1, sz, paddedImg);
 
-    //convolve(I1, paddedImg, k, I2);
+    convolve(I1, paddedImg, k, I2);
 
 
 
@@ -88,11 +88,11 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     I2->image = (unsigned char *) malloc(total);
 
     unsigned char *in, *out, *paddedIn, *buf;
-    float *kernelP;
+    float *kernelP = k->kernel;
 
-    /*for (int i=0; i<kt; i++) {
+    for (int i=0; i<kt; i++) {
         cout << kernelP[0] << endl;
-    }*/
+    }
 
 
 
