@@ -8,11 +8,14 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
 std::string readKernelFile(char*);
 kernelP getKernel(std::string);
+int cfa(char);
 
 int main(int argc, char** argv) {
     std::string kernelString;
@@ -21,15 +24,14 @@ int main(int argc, char** argv) {
 
     // read kernel file and convert to std::string
     kernelString = readKernelFile(argv[1]);
+
     // parse kernel string and return an kernelP data structure.
     k = getKernel(kernelString);
 
-    for (int i = 0; i<kernelString.length(); i++) {
+    /*for (int i = 0; i<kernelString.length(); i++) {
         cout << kernelString[i];
-    }
+    }*/
     return 0;
-
-
 }
 
 kernelP allocateKernel(int w, int h, int s) {
@@ -56,9 +58,32 @@ kernelP getKernel(std::string str) {
     int w, h;
     unsigned char *out;
 
-    k = allocateKernel(w, h, sizeof(unsigned char));
-    out = k->kernel;
-    return (kernelP) k;
+    // this is dumb way of but I guess it'll work for now
+    w = cfa(str[0]);
+    h = cfa(str[2]);
+
+    cout << w << endl;
+
+    cout << h << " " << w << endl;
+    //cout << str[0] << "" << str[2] << endl;
+
+
+    /*if ((w != 3) and (h != 3)) {
+        cerr << "im doing parsing the stupid way so h and w must be 3" << endl;
+        exit(1);
+    }*/
+
+    //cout << "width is: " << str[0] << endl;
+    //cout << "height is: " << str[2] << endl;
+
+    
+
+
+
+    //k = allocateKernel(w, h, sizeof(unsigned char));
+    //out = k->kernel;
+    //return (kernelP) k;
+    return 0;
 }
 
 
@@ -78,4 +103,17 @@ std:: string readKernelFile(char *file) {
     return str;
 
 }
+
+
+
+int cfa(char str) {
+    // dumb way to parse. convert ASCII char to INT.
+    if (str == 51) {
+        return 3;
+    } else {
+        cerr << "error parsing" << endl;
+        return str;
+    }
+}
+
 
