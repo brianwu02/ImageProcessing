@@ -29,15 +29,31 @@ int main(int argc, char** argv) {
 }
 
 unsigned char initKernel(std::string str) {
+    unsigned char *p;
+    kernelP kernel;
+
 
     return 0;
 }
 
-typedef struct {
-    int width;
-    int height;
-    float *kernel;
-}kernelS, *kernelP;
+kernelP allocateKernel(int w, int h, int s) {
+    unsigned char *p;
+    kernelP k;
+
+    k = (kernelP) malloc(sizeof(kernelS));
+    p = (unsigned char *) malloc(w * h * s);
+    if (p == NULL) {
+        cerr << "allocateKernel error, Insufficient memory" << endl;
+        return ((kernelP) NULL);
+    }
+
+    k->width = w;
+    k->height = h;
+    k->kernel = p;
+
+    return k;
+
+}
 
 std:: string readKernelFile(char *file) {
     std::string filename = file;
