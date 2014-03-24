@@ -7,9 +7,6 @@
 
 using namespace std;
 
-void padImage(imageP, int, imageP);
-void copyToBuffer(imageP, int, int, unsigned char*);
-
 void padImage(imageP I1, int sz, imageP paddedImg) {
     /* PIXEL REPLICATION PADDING
      * takes I1 as input image, I1 and applies pixel replication technique
