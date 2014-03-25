@@ -53,4 +53,4 @@ extern void padImage(imageP, int, imageP);
 extern void copyToBuffer(imageP, int, int, unsigned char*);
 extern void floatCopyToBuffer(imageP, int, int, float*);
 extern int clip(int);
-extern float flcip(float);
+extern float fclip(float);
