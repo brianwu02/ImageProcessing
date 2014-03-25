@@ -37,16 +37,6 @@ int main(int argc, char** argv) {
         cout << kernelValues[i] << endl;
     }
 
-    // read kernel file and convert to std::string
-    //kernelString = readKernelFile(argv[1]);
-    
-    // parse kernel string and return an kernelP data structure.
-    //k = getKernel(kernelString);
-
-    /*for (int i = 0; i<kernelString.length(); i++) {
-        cout << kernelString[i];
-    }*/
-
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
     paddedImg = NEWIMAGE;
