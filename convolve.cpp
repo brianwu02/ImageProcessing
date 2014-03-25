@@ -19,6 +19,8 @@ std::string readKernelFile(char*);
 kernelP getKernel(std::string);
 int cfa(char);
 
+float* openKernelFile(char*);
+
 int main(int argc, char** argv) {
     std::string kernelString;
     std::string str;
@@ -28,6 +30,12 @@ int main(int argc, char** argv) {
     cout << "infile: " << argv[1] << endl;
     cout << "kernel File: " << argv[2] << endl;
     cout << "outfile: " << argv[3] << endl;
+    float *kernelValues;
+    kernelValues = openKernelFile(argv[2]);
+
+    for (int i=0; i<11; i++) {
+        cout << kernelValues[i] << endl;
+    }
 
     // read kernel file and convert to std::string
     //kernelString = readKernelFile(argv[1]);
@@ -134,6 +142,7 @@ int main(int argc, char** argv) {
 
 
 
+
 void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     /* I1 => original Image
      * paddedImg => the pixel replicated Image
@@ -220,6 +229,68 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
         }
     }
 
+}
+
+
+float* openKernelFile(char* file) {
+    int array_size = 1024;
+    char * array = new char[array_size];
+    int position = 0;
+    // this stupid implementation only works for example input files.
+    ifstream f(file);
+    float *matrix;
+    matrix = (float *) malloc(4 * 9); // 4 bytes * 9 elements;
+
+    if (f.is_open()) {
+        
+        while (!f.eof() && position < array_size) {
+            f.get(array[position]);
+            position++;
+        }
+
+        array[position-1] = '\0';
+        
+        char a, e;
+        int i = 0;
+        int j = 0;
+
+        string b, d;
+        while (array[i] != '\0') {
+            if (isdigit(array[i]) and isdigit(array[i+1])) {
+                // handles 2 digits
+                int val;
+                a = array[i];
+                e = array[i+1];
+                b = a;
+                d = e;
+                val += 10 * atoi(b.c_str());
+                val += 1 * atoi(d.c_str());
+                matrix[j] = val;
+                i++;
+                i++;
+                j++;
+            } else if (isdigit(array[i]) and (array[i-1] == '-')) {
+                a = array[i];
+                b = a;
+                int val = atoi(b.c_str());
+                matrix[j] = (-1 * val);
+                i++;
+                j++;
+            } else if (isdigit(array[i]) and (array[i-1] != '-')) {
+                a = array[i];
+                b = a;
+                int val = atoi(b.c_str());
+                matrix[j] = val;
+                i++;
+                j++;
+            } else {
+                i++;
+            }
+    
+        }
+    }
+
+    return matrix;
 }
 
 kernelP allocateKernel(int w, int h, int s) {
