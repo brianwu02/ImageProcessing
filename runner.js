@@ -104,33 +104,12 @@ async.parallel([
        });
 }]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
+/*
 var blur = spawn('./blur', [
   'mad256.pgm', '5', '5', 'out5.pgm']);
 var unordered_dither = spawn('./unordered_dither', [
   'mad256.pgm', '8', '.5', 'out1.pgm']);
-
+*/
 
 
 /*
@@ -146,7 +125,6 @@ blur.on('close', function(code) {
   console.log('code: ' + code);
 });
 */
-
 
 /*
 ls.stdout.on('data', function(data) {
