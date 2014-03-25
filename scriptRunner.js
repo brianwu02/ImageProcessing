@@ -28,7 +28,7 @@ var cmds = [
 cmds.forEach(function(data) {
   tasks.push(function(callback) {
     exec(data, function(error, stdout, stderr) {
-      console.log("STDOUT: " + stdout);
+      console.log(stdout);
       callback();
     });
   });
