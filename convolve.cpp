@@ -48,17 +48,29 @@ int main(int argc, char** argv) {
     float *kimg = k->kernel;
     
     // hard code some sample values
-    /*
-    kimg[0] = .11;
-    kimg[1] = .11;
-    kimg[2] = .11;
-    kimg[3] = .11;
-    kimg[4] = .11;
-    kimg[5] = .11;
-    kimg[6] = .11;
-    kimg[7] = .11;
-    kimg[8] = .11;
+    
+    // weighted average
+    kimg[0] = 1;
+    kimg[1] = 2;
+    kimg[2] = 1;
+    kimg[3] = 2;
+    kimg[4] = 4;
+    kimg[5] = 2;
+    kimg[6] = 1;
+    kimg[7] = 2;
+    kimg[8] = 1;
+    
+    /*kimg[0] = 0;
+    kimg[1] = -1;
+    kimg[2] = 0;
+    kimg[3] =  -1;
+    kimg[4] = 5;
+    kimg[5] = -1;
+    kimg[6] = 0;
+    kimg[7] = -1;
+    kimg[8] = 0;
     */
+    
     /*
     kimg[0] = -1.0;
     kimg[1] = -1.0;
@@ -71,16 +83,42 @@ int main(int argc, char** argv) {
     kimg[8] = -1.0;
     */
 
+    /*
+    kimg[0] = 1;
+    kimg[1] = 1;
+    kimg[2] = 1;
+    kimg[3] = 1;
+    kimg[4] = 1;
+    kimg[5] = 1;
+    kimg[6] = 1;
+    kimg[7] = 1;
+    kimg[8] = 1;
+    */
+    /*
+    kimg[0] = -10;
+    kimg[1] = -10;
+    kimg[2] = -10;
+    kimg[3] = 0;
+    kimg[4] = 0;
+    kimg[5] = 0;
+    kimg[6] = 10;
+    kimg[7] = 10;
+    kimg[8] = 10;
+    */
 
-    kimg[0] = -1.0;
-    kimg[1] = -1.0;
-    kimg[2] = -1.0;
-    kimg[3] = -1.0;
-    kimg[4] = 8.0;
-    kimg[5] = -1.0;
-    kimg[6] = -1.0;
-    kimg[7] = -1.0;
-    kimg[8] = -1.0;
+    /*
+    kimg[0] = -10;
+    kimg[1] = 0;
+    kimg[2] = 10;
+    kimg[3] = -10;
+    kimg[4] = 0;
+    kimg[5] = 10;
+    kimg[6] = -10;
+    kimg[7] = 0;
+    kimg[8] = 10;
+    */
+    
+
 
 
 
@@ -145,7 +183,7 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     float *r0, *r1, *r2;
 
     // kernelP is pointer to kernel
-    unsigned char kr[9]; // temp to hold calculations
+    int kr[9]; // temp to hold calculations
 
     //cout << (int) kernelP[0] << endl;
 
@@ -155,8 +193,10 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
         r0 = arrayOfPointers[y % 3] + 1;
         r1 = arrayOfPointers[(y+1) % 3] + 1;
         r2 = arrayOfPointers[(y+2) % 3] + 1;
-        float sum = 0;
+        
+        unsigned char sum;
         for (int x=0; x<width; x++) {
+
 
             kr[0] = r0[-1] * kernelP[0];
             kr[1] = r0[0] * kernelP[1];
@@ -168,10 +208,10 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
             kr[7] = r2[0] * kernelP[7];
             kr[8] = r2[1] * kernelP[8];
 
-            //cout << (int) r1[0] << " * " << (float) kernelP[4] << endl;
-
-            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 9;
-            sum = clip(sum);
+            //cout << (int) r1[0] << " * " << (float) kernelP[4] << " = " << r1[0] * kernelP[4] << endl;
+            //cout << (int) r1[1] << " * " << (float) kernelP[5] << endl;
+            
+            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 16;
             out[y*width+x] = sum;
             r0++;
             r1++;
