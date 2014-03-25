@@ -43,12 +43,12 @@ int main(int argc, char** argv) {
     
     k->height = 3;
     k->width = 3;
-    k->kernel = (float *) malloc(k->width * k->height);
     int ksize = k->height * k->width;
+    k->kernel = (float *) malloc(4 * ksize); // stupid. have to multiply by 4 bytes. man why does c++ suck.
     float *kimg = k->kernel;
     
     // hard code some sample values
-    
+    /*
     kimg[0] = .11;
     kimg[1] = .11;
     kimg[2] = .11;
@@ -58,13 +58,38 @@ int main(int argc, char** argv) {
     kimg[6] = .11;
     kimg[7] = .11;
     kimg[8] = .11;
-    
+    */
+    /*
+    kimg[0] = -1.0;
+    kimg[1] = -1.0;
+    kimg[2] = -1.0;
+    kimg[3] = -1.0;
+    kimg[4] = 8.0;
+    kimg[5] = -1.0;
+    kimg[6] = -1.0;
+    kimg[7] = -1.0;
+    kimg[8] = -1.0;
+    */
+
+
+    kimg[0] = -1.0;
+    kimg[1] = -1.0;
+    kimg[2] = -1.0;
+    kimg[3] = -1.0;
+    kimg[4] = 8.0;
+    kimg[5] = -1.0;
+    kimg[6] = -1.0;
+    kimg[7] = -1.0;
+    kimg[8] = -1.0;
+
+
 
     // fix the size.
     int sz = 3;
     padImage(I1, sz, paddedImg);
 
     convolve(I1, paddedImg, k, I2);
+    IP_saveImage(I2, argv[3]);
 
 
 
@@ -91,6 +116,7 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     I2->image = (unsigned char *) malloc(total);
 
     unsigned char *in, *out, *paddedIn;
+    out = I2->image;
     paddedIn = paddedImg->image;
     int paddedWidth = paddedImg->width;
     int paddedHeight = paddedImg->height;
@@ -98,15 +124,11 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     float *buf;
     float *kernelP = k->kernel;
 
-    for (int i=0; i<kt; i++) {
-        cout << kernelP[0] << endl;
-    }
-    
     // do a lot of hard coded values because im tired and I just want it to work for 3*3 kernel....
     int bufRowsRequired = 3;
 
     // initialize buffer for kernel
-    buf = (float *) malloc(paddedWidth * bufRowsRequired);
+    buf = (float *) malloc(paddedWidth * bufRowsRequired * 4);
 
     // allocate memory for an array that will hold all the pointers to circlar buffer
     float *arrayOfPointers[bufRowsRequired];
@@ -122,15 +144,39 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     }
     float *r0, *r1, *r2;
 
+    // kernelP is pointer to kernel
+    unsigned char kr[9]; // temp to hold calculations
+
+    //cout << (int) kernelP[0] << endl;
+
     for (int y=0; y<height; y++) {
         // copy next row to buffer
         floatCopyToBuffer(paddedImg, y+(bufRowsRequired-1), bufRowsRequired, buf);
         r0 = arrayOfPointers[y % 3] + 1;
         r1 = arrayOfPointers[(y+1) % 3] + 1;
         r2 = arrayOfPointers[(y+2) % 3] + 1;
-
+        float sum = 0;
         for (int x=0; x<width; x++) {
-            
+
+            kr[0] = r0[-1] * kernelP[0];
+            kr[1] = r0[0] * kernelP[1];
+            kr[2] = r0[1] * kernelP[2];
+            kr[3] = r1[-1] * kernelP[3];
+            kr[4] = r1[0] * kernelP[4];
+            kr[5] = r1[1] * kernelP[5];
+            kr[6] = r2[-1] * kernelP[6];
+            kr[7] = r2[0] * kernelP[7];
+            kr[8] = r2[1] * kernelP[8];
+
+            //cout << (int) r1[0] << " * " << (float) kernelP[4] << endl;
+
+            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 9;
+            sum = clip(sum);
+            out[y*width+x] = sum;
+            r0++;
+            r1++;
+            r2++;
+
         }
     }
 
