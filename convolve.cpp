@@ -33,27 +33,26 @@ int main(int argc, char** argv) {
     float *kernelValues;
     kernelValues = openKernelFile(argv[2]);
 
-    for (int i=0; i<11; i++) {
-        cout << kernelValues[i] << endl;
-    }
-
     I1 = IP_readImage(argv[1]);
     I2 = NEWIMAGE;
     paddedImg = NEWIMAGE;
     k = NEWKERNEL;
 
-    // create a dummy kernel structure of w=3, h=3.
     
-    k->height = 3;
-    k->width = 3;
+    k->height = kernelValues[0];
+    k->width = kernelValues[1];
     int ksize = k->height * k->width;
     k->kernel = (float *) malloc(4 * ksize); // stupid. have to multiply by 4 bytes. man why does c++ suck.
     float *kimg = k->kernel;
     
+    // copy kernel values to another pointer, yes inefficient but it works ok!
+    for (int i=0; i<9; i++) {
+        kimg[i] = kernelValues[i+2];
+    }
+
     // hard code some sample values
-    
     // weighted average
-    kimg[0] = 1;
+    /*kimg[0] = 1;
     kimg[1] = 2;
     kimg[2] = 1;
     kimg[3] = 2;
@@ -62,6 +61,7 @@ int main(int argc, char** argv) {
     kimg[6] = 1;
     kimg[7] = 2;
     kimg[8] = 1;
+    */
     
     /*kimg[0] = 0;
     kimg[1] = -1;
@@ -160,6 +160,9 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     
     float *buf;
     float *kernelP = k->kernel;
+    /*for (int i=0; i<9; i++) {
+        cout << kernelP[i] << endl;
+    }*/
 
     // do a lot of hard coded values because im tired and I just want it to work for 3*3 kernel....
     int bufRowsRequired = 3;
@@ -210,7 +213,7 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
             //cout << (int) r1[0] << " * " << (float) kernelP[4] << " = " << r1[0] * kernelP[4] << endl;
             //cout << (int) r1[1] << " * " << (float) kernelP[5] << endl;
             
-            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 16;
+            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 9;
             out[y*width+x] = sum;
             r0++;
             r1++;
@@ -218,9 +221,7 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
 
         }
     }
-
 }
-
 
 float* openKernelFile(char* file) {
     int array_size = 1024;
@@ -276,10 +277,8 @@ float* openKernelFile(char* file) {
             } else {
                 i++;
             }
-    
         }
     }
-
     return matrix;
 }
 
