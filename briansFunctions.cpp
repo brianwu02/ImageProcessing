@@ -155,3 +155,23 @@ void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer
         ptr++;
     }
 }
+
+int clip(int a) {
+    if (a >= 255) {
+        return 255;
+    } else if (a <= 0) {
+        return 0;
+    } else {
+        return a;
+    }
+}
+
+float fclip(float a) {
+    if (a >= 255) {
+        return 255;
+    } else if (a <= 0) {
+        return 0;
+    } else {
+        return a;
+    }
+}
