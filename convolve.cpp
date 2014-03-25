@@ -14,6 +14,7 @@
 using namespace std;
 
 void convolve(imageP, imageP, kernelP, imageP);
+
 std::string readKernelFile(char*);
 kernelP getKernel(std::string);
 int cfa(char);
@@ -24,9 +25,13 @@ int main(int argc, char** argv) {
     imageP I1, I2, paddedImg;
     kernelP k;
 
+    cout << "infile: " << argv[1] << endl;
+    cout << "kernel File: " << argv[2] << endl;
+    cout << "outfile: " << argv[3] << endl;
+
     // read kernel file and convert to std::string
     //kernelString = readKernelFile(argv[1]);
-
+    
     // parse kernel string and return an kernelP data structure.
     //k = getKernel(kernelString);
 
@@ -117,10 +122,6 @@ int main(int argc, char** argv) {
     kimg[7] = 0;
     kimg[8] = 10;
     */
-    
-
-
-
 
     // fix the size.
     int sz = 3;
@@ -128,11 +129,10 @@ int main(int argc, char** argv) {
 
     convolve(I1, paddedImg, k, I2);
     IP_saveImage(I2, argv[3]);
-
-
-
     return 1;
 }
+
+
 
 void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
     /* I1 => original Image
@@ -220,14 +220,6 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
         }
     }
 
-
-
-
-
-
-
-
-
 }
 
 kernelP allocateKernel(int w, int h, int s) {
@@ -248,6 +240,7 @@ kernelP allocateKernel(int w, int h, int s) {
     return k;
 
 }
+/*
 
 kernelP getKernel(std::string str) {
     kernelP k;
@@ -264,16 +257,13 @@ kernelP getKernel(std::string str) {
     //cout << str[0] << "" << str[2] << endl;
 
 
-    /*if ((w != 3) and (h != 3)) {
+    if ((w != 3) and (h != 3)) {
         cerr << "im doing parsing the stupid way so h and w must be 3" << endl;
         exit(1);
-    }*/
+    }
 
     //cout << "width is: " << str[0] << endl;
     //cout << "height is: " << str[2] << endl;
-
-    
-
 
 
     //k = allocateKernel(w, h, sizeof(unsigned char));
@@ -281,6 +271,7 @@ kernelP getKernel(std::string str) {
     //return (kernelP) k;
     return 0;
 }
+*/
 
 
 
@@ -299,7 +290,6 @@ std:: string readKernelFile(char *file) {
     return str;
 
 }
-
 
 
 int cfa(char str) {
