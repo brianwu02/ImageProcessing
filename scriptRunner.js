@@ -1,6 +1,15 @@
 var exec = require('child_process').exec;
 var async = require('async');
 
+/* TODO:
+ *  - instead of using console.log to log statements, pipe the output using STDIN.pipe
+ *      this will make output immediate instead of being staggered by asnyc.waterfall.
+ *
+ *  - figure out how error handling on:
+ *      - 'exec' script errors. stop execution or just continue and let user know of errors?
+ *
+ */
+
 var tasks = [];
 var cmds = [
   './unordered_dither mad256.pgm 8 .5 out1.pgm',
