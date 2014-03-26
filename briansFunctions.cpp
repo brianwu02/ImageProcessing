@@ -167,10 +167,10 @@ int clip(int a) {
 }
 
 float fclip(float a) {
-    if (a >= 255) {
-        return 255;
-    } else if (a <= 0) {
-        return 0;
+    if (a >= 255.0) {
+        return 255.0;
+    } else if (a <= 0.0) {
+        return 0.0;
     } else {
         return a;
     }
