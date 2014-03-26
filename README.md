@@ -2,7 +2,7 @@
 *please don't kill me for deeply nested for loops and neglecting to factor out methods*
 
 To execute scripts: 
-    ```js
+    ```
     node scriptrunner.js
     ```
 
