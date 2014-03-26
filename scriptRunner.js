@@ -9,7 +9,7 @@ var async = require('async');
  *      - 'exec' script errors. stop execution or just continue and let user know of errors?
  *
  */
-
+console.time('Script Execution Time');
 var tasks = [];
 var cmds = [
   './unordered_dither mad256.pgm 8 .5 out1.pgm',
@@ -49,7 +49,7 @@ async.waterfall([
     });
   },
   function(msg, callback) {
-    var doneMsg = "everything is done";
+    var doneMsg = 'Done creating ' + cmds.length + ' images.';
     console.log(msg);
     async.parallel(tasks, function() {
       callback(null, doneMsg);
@@ -57,5 +57,8 @@ async.waterfall([
   }
 ], function(err, doneMsg) {
     console.log(doneMsg);
+    console.timeEnd('Script Execution Time');
 });
+
+
 
