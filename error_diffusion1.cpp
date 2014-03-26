@@ -74,14 +74,61 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
     }
 
     // create thresholding scale
-    threshold = 255 / 2;
 
     int h = I1->height;
     int w = I1->width;
 
+    // create buffer.
+    unsigned char *buf;
+    buf = (unsigned char *) malloc(2 * (w + 2)); // rows + 2 pads for each row.
+
+    // pad with 0's
+    buf[0] = 0;
+    buf[w] = 0;
+    buf[w+1] = 0;
+    buf[2*(w+2)-1] = 0;
+
+    int bufRowsRequired = 2;
+
+    // create pointers to buffer.
+    unsigned char *in1, *in2;
+
+    // create array of pointers
+    unsigned char *arrayOfPointers[bufRowsRequired];
+
+    for(int i=0; i<bufRowsRequired; i++) {
+        // store pointers in array.
+        arrayOfPointers[i] = &buf[i*(w+2)];
+    }
+
+    // mtd = 0 -> Floyd Steinberg error Diffusion
+    // mtd = 1 -> Jarvis Jundice error Diffusion
+    
+    threshold = 255 / 2;
+    copyToBufferPadded(I1, 0, 2, buf);
 
     for (int y=0; y<h; y++) {
+        copyToBufferPadded(I1, (y+1), 2, buf);
+            in2 = arrayOfPointers[(y+1) % 2] + 1;
+            in1 = arrayOfPointers[y % 2] + 1;
         for (int x=0; x<w; x++) {
+            if (serpentine == 0) {
+                // do floyd Steinberg
+                *out = (*in1 < threshold) ? 0 : 255;
+                short e = *in1 - *out;
+
+                in1[1] += (e*7/16.0);
+                in2[-1] += (e*3/16.0);
+                in2[0] += (e*5/16.0);
+                in2[1] += (e*1/16.0);
+                
+                in1++;
+                in2++;
+                out++;
+
+            } else {
+                // do jarvis jundice
+            }
         }
     }
 
