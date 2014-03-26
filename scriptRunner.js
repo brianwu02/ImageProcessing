@@ -59,8 +59,3 @@ async.waterfall([
     console.log(doneMsg);
 });
 
-/*
-async.parallel(tasks, function() {
-  callOnceDone();
-});
-*/
