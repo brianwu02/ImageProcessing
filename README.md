@@ -3,7 +3,8 @@
 
 To execute scripts: 
     ```javascript
-    node scriptrunner.js```
+    node scriptrunner.js
+    ```
 
 ####convolve.cpp
 
