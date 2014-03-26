@@ -35,8 +35,7 @@ cmds.forEach(function(data) {
   });
 });
 
-// make sure that gets executed first. If it is, the callback
-// will return allow async.each to occur.
+// Wrap 'exec' function inside a async.waterfall which ensures that 'make' is executed beforehand.
 async.waterfall([
   function(callback) {
     exec('make', function(error, stdout, stderr) {
