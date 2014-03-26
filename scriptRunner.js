@@ -1,10 +1,6 @@
 var exec = require('child_process').exec;
 var async = require('async');
 
-function callOnceDone() {
-  console.log("everything is done");
-}
-
 var tasks = [];
 var cmds = [
   './unordered_dither mad256.pgm 8 .5 out1.pgm',
