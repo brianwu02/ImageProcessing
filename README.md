@@ -1,6 +1,10 @@
 ## Image Processing
 *please don't kill me for deeply nested for loops and neglecting to factor out methods*
 
+To execute scripts: 
+    ```javascript
+    node scriptrunner.js```
+
 ####convolve.cpp
 
 Convolve input image *in* with *kernel* and store result in *out*. Convolution kernel is stored
