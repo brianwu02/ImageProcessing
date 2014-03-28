@@ -134,12 +134,32 @@ void floatCopyToBuffer(imageP I1, int row, int bufRowsRequired, float *buffer) {
 
     int bufStartIndex = (row % bufRowsRequired) * width;
 
+    ptr = &buffer[bufStartIndex+1];
+    for (int x=0; x<width; x++) {
+        ptr[0] = in[row*width+x];
+        ptr++;
+    }
+}
+
+
+
+void copyToBufferPadded(imageP I1, int row, int bufRowsRequired, unsigned char *buffer) {
+    int height = I1->height;
+    int width = I1->width;
+    unsigned char *in, *ptr;
+    in = I1->image;
+
+    int bufStartIndex = (row % bufRowsRequired) * width;
+
     ptr = &buffer[bufStartIndex];
     for (int x=0; x<width; x++) {
         ptr[0] = in[row*width+x];
         ptr++;
     }
 }
+
+
+
 
 void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer) {
     int height = I1->height;
@@ -156,14 +176,15 @@ void copyToBuffer(imageP I1, int row, int bufRowsRequired, unsigned char *buffer
     }
 }
 
-int clip(int a) {
+int clip(int a) {/*
     if (a >= 255) {
         return 255;
     } else if (a <= 0) {
         return 0;
     } else {
         return a;
-    }
+    }*/
+    return max(0, min(255, a));
 }
 
 float fclip(float a) {
