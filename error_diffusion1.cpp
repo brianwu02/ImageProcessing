@@ -111,9 +111,16 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
         copyToBufferPadded(I1, (y+1), 2, buf);
             in2 = arrayOfPointers[(y+1) % 2] + 1;
             in1 = arrayOfPointers[y % 2] + 1;
+            if (serpentine == 1 and (y % 2) == 1) {
+                for (int i=0; i<w; i++) {
+                    in1++;
+                    in2++;
+                    out++;
+                }
+            }
+
         for (int x=0; x<w; x++) {
-            if (serpentine == 0) {
-                // do floyd Steinberg
+            if (serpentine == 0 or (serpentine == 1 and (y % 2) == 0)) {
                 *out = (*in1 < threshold) ? 0 : 255;
                 short e = *in1 - *out;
 
@@ -126,14 +133,25 @@ void error_diffusion(imageP I1, int mtd, int serpentine, float gamma, imageP I2)
                 in2++;
                 out++;
 
-            } else {
-                // do jarvis jundice
+            } else if (serpentine == 1 and (y % 2) == 1) {
+                *out = (*in1 < threshold) ? 0 : 255;
+                short e = *in - *out;
+                
+                in1[1] += (e*7/16.0);
+                in2[-1] += (e*3/16.0);
+                in2[0] += (e*5/16.0);
+                in2[1] += (e*1/16.0);
+
+                in1--;
+                in2--;
+                out--;
+                
             }
+                
         }
     }
 
 
-    
 }
 
 
