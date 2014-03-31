@@ -213,7 +213,8 @@ void convolve(imageP I1, imageP paddedImg, kernelP k, imageP I2) {
             //cout << (int) r1[0] << " * " << (float) kernelP[4] << " = " << r1[0] * kernelP[4] << endl;
             //cout << (int) r1[1] << " * " << (float) kernelP[5] << endl;
             
-            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 9;
+            //sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]) / 9;
+            sum = (kr[0] + kr[1] + kr[2] + kr[3] + kr[4] + kr[5] + kr[6] + kr[7] + kr[8]);
             out[y*width+x] = sum;
             r0++;
             r1++;
