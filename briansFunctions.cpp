@@ -118,8 +118,8 @@ void padImage(imageP I1, int sz, imageP paddedImg) {
             } else {
                 // this should never happen since this will only occur if we have
                 // not handled a certain x,y coordinate.
-                cout << "unhandled condition, something bad" << endl;
-                cout << "x is: " << x << " y is: " << y << endl;
+                cerr << "unhandled condition, something bad" << endl;
+                cerr << "x is: " << x << " y is: " << y << endl;
             }
         }
     }
