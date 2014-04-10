@@ -181,6 +181,7 @@ void median(imageP I1, imageP paddedImg, int sz, int avg_nbrs, imageP I2) {
     
     int i, total, paddedTotal;
     unsigned char *in, *out, *paddedIn, *buf;
+    
 
     total = I1->width * I1->height;
     paddedTotal = paddedImg->height * paddedImg->width;

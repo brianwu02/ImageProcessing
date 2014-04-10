@@ -32,7 +32,7 @@ unordered_dither: $($@.o) IPutil.o
 ordered_dither: $($@.o) IPutil.o
 halftone: $($@.o) IPutil.o
 error_diffusion: $($@.o) IPutil.o
-error_diffusion1: $($@.o) IPutil.o
+error_diffusion1: $($@.o) IPutil.o briansFunctions.o
 sharpen: $(@.o) IPutil.o
 median: $(@.o) IPutil.o
 convolve: $(@.o) IPutil.o briansFunctions.o

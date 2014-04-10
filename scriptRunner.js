@@ -26,7 +26,7 @@ var cmds = [
   './median maddot.pgm 3 0 out13.pgm',
   './convolve mad256.pgm file1.AF out14.pgm',
   './convolve mad256.pgm file2.AF out15.pgm',
-  '.convolve mad256.pgm file3.AF out16.pgm',
+  './convolve mad256.pgm file3.AF out16.pgm',
   './convolve mad256.pgm file4.AF out17.pgm'
 ];
 

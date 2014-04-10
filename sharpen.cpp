@@ -84,11 +84,11 @@ void sharpen(imageP I1, imageP I2, int fctr, imageP final_img) {
     
     // subtract blurred image from original image to get difference.
     for (i=0; i<total; i++) {
-        difference[i] = clip(original[i] - blurred[i]);
+        difference[i] = clip(fctr * (original[i] - blurred[i]));
     }
 
     for (i=0; i<total; i++) {
-        fin_img[i] = clip(original[i] + (fctr * difference[i]));
+        fin_img[i] = clip(original[i] + difference[i]);
     }
 
 }
