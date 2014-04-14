@@ -6,6 +6,20 @@ To execute scripts:
     node scriptrunner.js
     ```
 
+
+#### dft.cpp
+
+Computes the discrete Fourier transform of 1-D list of complex numbers in file **in**. 
+
+usage: __dft__: *in* *dir* *out*
+
+__in__: [FILE] 1-D list of complex numbers.
+
+__dir__: [INT] 0 or 1.
+
+__out__: [FILE] 1-D list of complex numbers. stored as 2 columns in file: real, imaginary.
+The first line of the file consists of 2 numbers: width & height
+
 ####convolve.cpp
 
 Convolve input image *in* with *kernel* and store result in *out*. Convolution kernel is stored
