@@ -1,0 +1,18 @@
+Objective: 
+    - Understand fourier transforms.
+    - Understand the FFT algorithm.
+    - Understand filtering in the frequency domain.
+
+Definitions: 
+    Mathematical Notation:
+    - Fn = (1/N) * SUMMATION k=0 to N-1, fk * e^((-i * 2pi * n * k) / N)
+    
+    - fn = SUMMATION k=0 to N-1, Fk * e^((i * 2pi * n * k) / N)
+
+1. Fourier Analysis
+    a) consider a list L of six real numbers: 10, 40, 20, 90, 5, 30. Compute the six complex
+    Fourier coefficients for list L. Note that N = 6 in this case. Show all hand calculations.
+
+    b) Explain why the maximum frequency n cannot exceed 3 cycles per scan line i.e., N/2 cycles per scanline.
+    
+    c) show that the results of eq. (1) using n=0,1,2,3,4,5 
